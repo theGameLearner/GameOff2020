@@ -70,7 +70,10 @@ public class PlayerMovement : MonoBehaviour
     public void ChangePlayerDirection(Vector3 newPlayerDirection)
 	{
         travelDirection = newPlayerDirection;
-        myRb.velocity = travelDirection * speed;
+        if (travelDirection.magnitude > 0)
+        {
+            myRb.velocity = travelDirection * speed;
+        }
     }
 
     /*

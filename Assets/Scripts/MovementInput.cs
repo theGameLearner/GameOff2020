@@ -16,7 +16,6 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(PlayerMovement))]
 public class MovementInput : MonoBehaviour
 {
-    public Transform LineStartingPrefab;
     public float maxlineLength = 50;
     public int maxReflections = 5;
     LineRenderer directionRenderer;

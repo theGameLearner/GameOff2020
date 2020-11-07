@@ -27,7 +27,11 @@ public class UIRendering : GenericSingletonMonobehaviour<UIRendering>
 	/// <param name="mouseStartPos">the position of mouse at starting</param>
 	public void DrawUiMouseDown(Vector3 mouseStartPos)
 	{
-		//throw new NotImplementedException();
+		directionStartPoint = mouseStartPos;
+		directionStartRectT.gameObject.SetActive(true);
+		directionTargetRectT.gameObject.SetActive(true);
+		directionStartRectT.position = mouseStartPos;
+		directionTargetRectT.position = mouseStartPos;
 	}
 
 	/// <summary>
@@ -36,7 +40,10 @@ public class UIRendering : GenericSingletonMonobehaviour<UIRendering>
 	/// <param name="mousePos">current mouse position</param>
 	public void DrawUiMouseMove(Vector3 mousePos)
 	{
-		//throw new NotImplementedException();
+		directionTargetPoint = mousePos;
+		Vector3 direction = directionTargetPoint - directionStartPoint;
+		directionTargetPoint = (direction.normalized * directionStartRectT.sizeDelta.x) + directionStartRectT.position;
+		directionTargetRectT.position = directionTargetPoint;
 	}
 
 	/// <summary>
@@ -44,6 +51,7 @@ public class UIRendering : GenericSingletonMonobehaviour<UIRendering>
 	/// </summary>
 	public void StopUIMouseRendering()
 	{
-		//throw new NotImplementedException();
+		directionStartRectT.gameObject.SetActive(false);
+		directionTargetRectT.gameObject.SetActive(false);
 	}
 }
