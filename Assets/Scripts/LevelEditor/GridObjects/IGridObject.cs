@@ -6,4 +6,12 @@ public interface IGridObject
 
     void SetXY(int x,int y);
 
+    int GetIndex();
+
+    void SetIndex(int index);
+
+    string GetJsonData();
+
+    void Initialize(string jsonData);
+
 }

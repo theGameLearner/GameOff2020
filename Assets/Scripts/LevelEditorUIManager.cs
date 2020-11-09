@@ -10,6 +10,8 @@ public class LevelEditorUIManager : MonoBehaviour
         [SerializeField] InputField GridLength;
         [SerializeField] InputField GridWidth;
 
+        [SerializeField] InputField LoadDataField;
+
         [SerializeField] Text messagetext;
 
         [SerializeField] Dropdown objectDropDown;
@@ -61,6 +63,10 @@ public class LevelEditorUIManager : MonoBehaviour
                     }
                 }
                 displayMessage("invalid length or width");
+            }
+
+            public void Loadtest(){
+                LevelEditorManager.instance.load(LoadDataField.text);
             }
         #endregion
     #endregion

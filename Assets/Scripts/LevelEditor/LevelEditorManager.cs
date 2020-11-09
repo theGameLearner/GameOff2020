@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TGL.Singletons;
+using Newtonsoft.Json;
 
 public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManager>
 {
@@ -50,6 +51,8 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
                         Destroy(existingGridObject);
                     }
                     GameObject go = Instantiate(selectedGridObject.prefab,pos,Quaternion.identity,LevelObjectsParent);
+                    IGridObject gridObject = go.GetComponent<IGridObject>();
+                    gridObject.SetIndex(selectedGridObject.index);
                     go.name += "_"+x+"_"+y;
                     activeGridObjects.Add(go);
                 }
@@ -105,6 +108,42 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
             return gridObjectPrefab;
         }
 
+        public void SaveGame(){
+            
+            SaveData saveData = new SaveData();
+            saveData.gridWidth = levelgrid.Width;
+            saveData.gridHeight = levelgrid.Height;
+
+            saveData.objectList = new List<GridObjectSaveData>();
+
+            foreach (GameObject Go in activeGridObjects)
+            {
+                GridObjectSaveData gridObjectSaveData = new GridObjectSaveData();
+                IGridObject gridObject = Go.GetComponent<IGridObject>();
+                int _x;int _y;
+                levelgrid.GetXY(Go.transform.position,out _x,out _y);
+                gridObjectSaveData.x = _x;
+                gridObjectSaveData.y = _y;
+                gridObjectSaveData.index = gridObject.GetIndex();
+                gridObjectSaveData.objectData = gridObject.GetJsonData();
+
+                saveData.objectList.Add(gridObjectSaveData);
+            }
+
+            Debug.Log(JsonConvert.SerializeObject(saveData));
+
+        }
+
+        public void load(string json){
+            SaveData loadData = JsonConvert.DeserializeObject<SaveData>(json);
+            int i = loadData.objectList[0].index;
+            GameObject prefab = gameData.AvailableGridObjects.Find((x => x.index == i)).prefab;
+            Vector3 Pos = levelgrid.GetGridPosition(loadData.objectList[0].x,loadData.objectList[0].y);
+            GameObject Go = Instantiate(prefab,Pos,Quaternion.identity);
+            IGridObject gridObject = Go.GetComponent<IGridObject>();
+            gridObject.Initialize(loadData.objectList[0].objectData);
+        }
+
     
         public void createGrid(int width,int height)
         {
@@ -127,4 +166,22 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
         }
 
     #endregion
+}
+[System.Serializable]
+public struct SaveData{
+    public int gridWidth;
+    public int gridHeight;
+
+    public List<GridObjectSaveData> objectList;
+}
+
+[System.Serializable]
+public struct GridObjectSaveData{
+    public int index;
+
+    public int x;
+
+    public int y;
+    
+    public string objectData;
 }
