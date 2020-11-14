@@ -10,8 +10,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
-public class TurretHandler : MonoBehaviour
+public class TurretHandler : MonoBehaviour,IGridObject
 {
     public int bulletIndexInPool;
     public float bulletLife;
@@ -25,6 +26,10 @@ public class TurretHandler : MonoBehaviour
     private float currCharge;
 
     private static int bulletCount;
+
+    int index;
+    int x;
+    int y;
     
     void Start()
     {
@@ -93,4 +98,44 @@ public class TurretHandler : MonoBehaviour
 
         bulletRB.velocity = bulletStartPos.forward * GameSettings.instance.bulletSpeed;
     }
+
+        public int GetIndex()
+        {
+            return index;
+        }
+
+        public string GetJsonData()
+        {
+            TurretSaveData data = new TurretSaveData();
+            data.enumTurret = turretType;
+
+            return JsonConvert.SerializeObject(data);
+        }
+
+        public void GetXY(out int x, out int y)
+        {
+            x = this.x;
+            y = this.y;
+        }
+
+        public void Initialize(string jsonData)
+        {
+            TurretSaveData data = JsonConvert.DeserializeObject<TurretSaveData>(jsonData);
+            turretType = data.enumTurret;
+        }
+
+        public void SetIndex(int index)
+        {
+            this.index = index;
+        }
+
+        public void SetXY(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+}
+
+public struct TurretSaveData{
+    public EnumTurret enumTurret;
 }

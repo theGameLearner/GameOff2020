@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 
-public class WallObject : MonoBehaviour, IGridObject
+public class floor : MonoBehaviour, IGridObject
 {
-    #region Variables
+#region Variables
         int index;
         int x;
         int y;
@@ -18,12 +17,7 @@ public class WallObject : MonoBehaviour, IGridObject
 
         public string GetJsonData()
         {
-            WallData data = new WallData();
-            data.a = 1;
-            data.b ="abc";
-            data.c = Vector3.zero;
-
-            return JsonConvert.SerializeObject(data);
+            return "";
         }
 
         public void GetXY(out int x, out int y)
@@ -34,10 +28,6 @@ public class WallObject : MonoBehaviour, IGridObject
 
         public void Initialize(string jsonData)
         {
-            WallData data = JsonConvert.DeserializeObject<WallData>(jsonData);
-            Debug.Log(data.a);
-            Debug.Log(data.b);
-            Debug.Log(data.c);
         }
 
         public void SetIndex(int index)
@@ -52,11 +42,3 @@ public class WallObject : MonoBehaviour, IGridObject
         }
     #endregion
 }
-
-[System.Serializable]
-public class WallData{
-    public int a;
-    public string b;
-    public Vector3 c;
-}
-

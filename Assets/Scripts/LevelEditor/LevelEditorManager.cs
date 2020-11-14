@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TGL.Singletons;
+using System.IO;
 using Newtonsoft.Json;
 
 public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManager>
@@ -43,25 +44,38 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
                 mousePos.z = 10;
                 Vector3 worldPos =  camera.ScreenToWorldPoint(mousePos);
                 Debug.Log("world pos from camera = "+worldPos);
-                if(levelgrid.GetXY(worldPos,out x,out y)){
-                    Vector3 pos = levelgrid.GetGridPosition(x,y);
-                    GameObject existingGridObject;
-                    if(TryGetGridObjectAtposition(x,y,out existingGridObject)){
-                        activeGridObjects.Remove(existingGridObject);
-                        Destroy(existingGridObject);
-                    }
-                    GameObject go = Instantiate(selectedGridObject.prefab,pos,Quaternion.identity,LevelObjectsParent);
-                    IGridObject gridObject = go.GetComponent<IGridObject>();
-                    gridObject.SetIndex(selectedGridObject.index);
-                    go.name += "_"+x+"_"+y;
-                    activeGridObjects.Add(go);
+                if(levelgrid.GetXY(worldPos,out x,out y))
+                {
+                    SpawnGridObject(x, y,selectedGridObject.index);
                 }
-               
+
             }   
         }
+
+    
+
+   
     #endregion
 
     #region private methods
+        private IGridObject SpawnGridObject(int x, int y,int index)
+        {
+            GridObject objectToPlace = gameData.GetGridObject(index);
+            Vector3 pos = levelgrid.GetGridPosition(x, y);
+            GameObject existingGridObject;
+            if (TryGetGridObjectAtposition(x, y, out existingGridObject))
+            {
+                activeGridObjects.Remove(existingGridObject);
+                Destroy(existingGridObject);
+            }
+            GameObject go = Instantiate(objectToPlace.prefab, pos, Quaternion.identity, LevelObjectsParent);
+            IGridObject gridObject = go.GetComponent<IGridObject>();
+            gridObject.SetIndex(objectToPlace.index);
+            go.name += "_" + x + "_" + y;
+            activeGridObjects.Add(go);
+
+            return go.GetComponent<IGridObject>();
+        }
 
         void ClearGrid()
         {
@@ -69,7 +83,12 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
             for (int i = 0; i < j; i++)
             {
                 Destroy(LevelParent.GetChild(i).gameObject);
-            }   
+            }
+            foreach (GameObject Go in activeGridObjects)
+            {
+                Destroy(Go);
+            }
+            activeGridObjects.Clear();  
         }
 
         void GenerateNewGrid(int width,int height)
@@ -92,22 +111,16 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
             camera.GetComponent<EditorCameraControl>().SetLimits(width*cellSize,0,height*cellSize,0);
             camera.transform.position = new Vector3((width*0.5f*cellSize),camera.transform.position.y,width*0.5f*cellSize);
         }
+
+        void SaveFile(string json, string path){
+            
+            File.WriteAllText(path, json);
+
+        }
         
     #endregion
 
     #region public methods
-        public GameObject GetGridObjectPrefab(int ObjectIndex)
-        {
-            GameObject gridObjectPrefab = null;
-            if(gameData.AvailableGridObjects.Exists(g => g.index == ObjectIndex)){
-               gridObjectPrefab = gameData.AvailableGridObjects.Find((g => g.index == ObjectIndex)).prefab;
-            }
-            else{
-                Debug.LogError("gridObject of index "+ObjectIndex + "does not exist");
-            }
-            return gridObjectPrefab;
-        }
-
         public void SaveGame(){
             
             SaveData saveData = new SaveData();
@@ -129,19 +142,38 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 
                 saveData.objectList.Add(gridObjectSaveData);
             }
-
-            Debug.Log(JsonConvert.SerializeObject(saveData));
+            
+            string json = JsonConvert.SerializeObject(saveData);
+            Debug.Log(json);
+            SaveFile(json,Application.streamingAssetsPath+"/saveFile.json");
+           
 
         }
 
         public void load(string json){
+
             SaveData loadData = JsonConvert.DeserializeObject<SaveData>(json);
-            int i = loadData.objectList[0].index;
-            GameObject prefab = gameData.AvailableGridObjects.Find((x => x.index == i)).prefab;
-            Vector3 Pos = levelgrid.GetGridPosition(loadData.objectList[0].x,loadData.objectList[0].y);
-            GameObject Go = Instantiate(prefab,Pos,Quaternion.identity);
-            IGridObject gridObject = Go.GetComponent<IGridObject>();
-            gridObject.Initialize(loadData.objectList[0].objectData);
+            ClearGrid();
+            GenerateNewGrid(loadData.gridWidth,loadData.gridHeight);
+
+            foreach (GridObjectSaveData objectData in loadData.objectList)
+            {
+                IGridObject spawnedObject = SpawnGridObject(objectData.x,objectData.y,objectData.index);
+                spawnedObject.Initialize(objectData.objectData);
+            }
+        }
+
+        public void LoadFromfile(string path){
+            string json = "";
+            if(System.IO.File.Exists(path)){
+                json = System.IO.File.ReadAllText(path);
+                load(json);
+            }
+            else{
+                Debug.LogError("no such file or folder : "+path);
+            }
+
+            
         }
 
     

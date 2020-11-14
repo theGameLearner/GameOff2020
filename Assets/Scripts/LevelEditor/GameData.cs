@@ -8,6 +8,14 @@ public class GameData : ScriptableObject
 
     public List<GridObject> AvailableGridObjects;
     public GridObject defaultGridObject;
+
+    public GridObject GetGridObject(int index){
+        GridObject objectToReturn = AvailableGridObjects.Find( x => x.index == index);
+        if(objectToReturn == null){
+            return defaultGridObject;
+        }
+        return objectToReturn;       
+    }
    
 }
 

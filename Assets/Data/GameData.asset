@@ -13,19 +13,18 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   AvailableGridObjects:
-  - name: Cube1
+  - name: wall
     index: 1
-    prefab: {fileID: 8249170267467178033, guid: 7973b45d9ede95049bd605f60f87c2ad,
-      type: 3}
-  - name: Cube2
-    index: 2
     prefab: {fileID: 3111205553529879163, guid: 3b3dc34075842bf41b7940bf438ffdd0,
       type: 3}
-  - name: Cube3
+  - name: Floor
+    index: 2
+    prefab: {fileID: 321409616371089119, guid: 2a320c073ab9c7445941068d2714ac5f, type: 3}
+  - name: Turret
     index: 3
-    prefab: {fileID: 5201051216455901483, guid: 3a38315a135bfd14b9fa7c14a8956eec,
+    prefab: {fileID: 3947201696498973174, guid: c4642263ede38a64e87911f1e236112e,
       type: 3}
   defaultGridObject:
-    name: 
+    name: Floor2
     index: 0
-    prefab: {fileID: 0}
+    prefab: {fileID: 321409616371089119, guid: 2a320c073ab9c7445941068d2714ac5f, type: 3}
