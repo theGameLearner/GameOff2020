@@ -253,11 +253,11 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.5, y: -0.5, z: -0.5}
-  - {x: -0.5, y: -0.5, z: 0.5}
-  - {x: 0.5, y: -0.5, z: 0.5}
-  - {x: 0.5, y: -0.5, z: -0.5}
-  - {x: -0.55, y: -0.5, z: -0.5}
+  - {x: -0.5, y: -0.4, z: -0.5}
+  - {x: -0.5, y: -0.4, z: 0.5}
+  - {x: 0.5, y: -0.4, z: 0.5}
+  - {x: 0.5, y: -0.4, z: -0.5}
+  - {x: -0.55, y: -0.4, z: -0.5}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
