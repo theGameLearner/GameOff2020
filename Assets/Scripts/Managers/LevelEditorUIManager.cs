@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class LevelEditorUIManager : MonoBehaviour
 {
     #region Variables
-        [SerializeField] GameData gameData;
         [SerializeField] InputField GridLength;
         [SerializeField] InputField GridWidth;
 
@@ -29,7 +28,7 @@ public class LevelEditorUIManager : MonoBehaviour
         void Start()
         {
             List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
-            foreach (GridObject gridObject in gameData.AvailableGridObjects)
+            foreach (GridObject gridObject in GameSettings.instance.gameData.AvailableGridObjects)
             {
                 Dropdown.OptionData optionData = new Dropdown.OptionData(gridObject.name);
                 optionDatas.Add(optionData);
@@ -74,7 +73,7 @@ public class LevelEditorUIManager : MonoBehaviour
     #region eventHandlers
         public void OnObjectvalueChanged(Dropdown dropdown){
             string objectName = dropdown.options[dropdown.value].text;
-            GridObject gridObject = gameData.AvailableGridObjects.Find((o => o.name == objectName));
+            GridObject gridObject = GameSettings.instance.gameData.AvailableGridObjects.Find((o => o.name == objectName));
             if(gridObject != null){
                 LevelEditorManager.instance.selectedGridObject = gridObject;
             }

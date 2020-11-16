@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class floor : MonoBehaviour, IGridObject
 {
-#region Variables
+    #region Variables
         int index;
         int x;
         int y;

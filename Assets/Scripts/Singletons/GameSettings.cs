@@ -19,4 +19,11 @@ public class GameSettings : GenericSingletonMonobehaviour<GameSettings>
     public float bulletSpeed = 10;
     public float bulletLifeTime = 1;
     public int bulletPoolIndex = 0;
+
+    public Grid<GridSquare> levelGrid;
+
+    public GameData gameData;
+
+    public Transform playerSpawnSpotTransform;
+
 }

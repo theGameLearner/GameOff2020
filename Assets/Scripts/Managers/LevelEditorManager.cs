@@ -10,18 +10,18 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 {
     #region variables
         [SerializeField] Camera camera;
-        [SerializeField] GameData gameData;
         [SerializeField] GameObject baseSquare;
 
         [SerializeField] Transform LevelParent;
         [SerializeField] Transform LevelObjectsParent;
-        Grid<GridSquare> levelgrid;
+        [SerializeField] float cellSize = 5;
 
         List<GameObject> activeGridObjects;
-        
+
         [HideInInspector]
         public GridObject selectedGridObject;
-        [SerializeField] float cellSize = 5;
+        public PlayerSpawnSpot playerSpawnSpot = null;
+
     #endregion
 
   
@@ -30,6 +30,7 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
     // Start is called before the first frame update
     void Start()
         {
+            DontDestroyOnLoad(this);
             GenerateNewGrid(10,10);
             activeGridObjects = new List<GameObject>();
         }
@@ -38,13 +39,13 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
         void Update()
         {
             //left click place object
-            if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()){
+            if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && GameManager.instance.CurrGameState == GameStates.LevelEditor){
                 int x; int y;
                 Vector3 mousePos = Input.mousePosition;
                 mousePos.z = 10;
                 Vector3 worldPos =  camera.ScreenToWorldPoint(mousePos);
                 Debug.Log("world pos from camera = "+worldPos);
-                if(levelgrid.GetXY(worldPos,out x,out y))
+                if(GameSettings.instance.levelGrid.GetXY(worldPos,out x,out y))
                 {
                     SpawnGridObject(x, y,selectedGridObject.index);
                 }
@@ -60,8 +61,8 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
     #region private methods
         private IGridObject SpawnGridObject(int x, int y,int index)
         {
-            GridObject objectToPlace = gameData.GetGridObject(index);
-            Vector3 pos = levelgrid.GetGridPosition(x, y);
+            GridObject objectToPlace = GameSettings.instance.gameData.GetGridObject(index);
+            Vector3 pos = GameSettings.instance.levelGrid.GetGridPosition(x, y);
             GameObject existingGridObject;
             if (TryGetGridObjectAtposition(x, y, out existingGridObject))
             {
@@ -71,6 +72,19 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
             GameObject go = Instantiate(objectToPlace.prefab, pos, Quaternion.identity, LevelObjectsParent);
             IGridObject gridObject = go.GetComponent<IGridObject>();
             gridObject.SetIndex(objectToPlace.index);
+            gridObject.SetXY(x,y);
+            
+            //handle player Spawn spot
+            if(gridObject.GetType() == typeof(PlayerSpawnSpot)){
+                if(playerSpawnSpot!=null){
+                    int _x,_y;
+                    playerSpawnSpot.GetXY(out _x,out _y);
+                    SpawnGridObject(_x,_y,0);
+                }
+                playerSpawnSpot = go.GetComponent<PlayerSpawnSpot>();
+                GameSettings.instance.playerSpawnSpotTransform = go.transform;
+            }
+
             go.name += "_" + x + "_" + y;
             activeGridObjects.Add(go);
 
@@ -93,17 +107,17 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 
         void GenerateNewGrid(int width,int height)
         {
-            levelgrid = new Grid<GridSquare>(width,height,cellSize,Vector3.zero);
-            for (int x = 0; x < levelgrid.Width; x++)
+            GameSettings.instance.levelGrid = new Grid<GridSquare>(width,height,cellSize,Vector3.zero);
+            for (int x = 0; x < GameSettings.instance.levelGrid.Width; x++)
             {
-                for (int y = 0; y < levelgrid.Height; y++)
+                for (int y = 0; y < GameSettings.instance.levelGrid.Height; y++)
                 {
                     GameObject go = new GameObject("gridBlock");
                     go.transform.SetParent(LevelParent,true);
-                    go.transform.position = levelgrid.GetGridPosition(x,y);
+                    go.transform.position = GameSettings.instance.levelGrid.GetGridPosition(x,y);
                     GridSquare gs = go.AddComponent<GridSquare>();
                     gs.baseSquare = baseSquare;
-                    levelgrid.gridArray[x,y] = gs;
+                    GameSettings.instance.levelGrid.gridArray[x,y] = gs;
                 }
             }
 
@@ -124,8 +138,8 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
         public void SaveGame(){
             
             SaveData saveData = new SaveData();
-            saveData.gridWidth = levelgrid.Width;
-            saveData.gridHeight = levelgrid.Height;
+            saveData.gridWidth = GameSettings.instance.levelGrid.Width;
+            saveData.gridHeight = GameSettings.instance.levelGrid.Height;
 
             saveData.objectList = new List<GridObjectSaveData>();
 
@@ -134,7 +148,7 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
                 GridObjectSaveData gridObjectSaveData = new GridObjectSaveData();
                 IGridObject gridObject = Go.GetComponent<IGridObject>();
                 int _x;int _y;
-                levelgrid.GetXY(Go.transform.position,out _x,out _y);
+                GameSettings.instance.levelGrid.GetXY(Go.transform.position,out _x,out _y);
                 gridObjectSaveData.x = _x;
                 gridObjectSaveData.y = _y;
                 gridObjectSaveData.index = gridObject.GetIndex();
@@ -188,7 +202,7 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
             int _x; int _y;
             for (int i = 0; i < activeGridObjects.Count; i++)
             {
-                levelgrid.GetXY(activeGridObjects[i].transform.position,out _x,out _y);
+                GameSettings.instance.levelGrid.GetXY(activeGridObjects[i].transform.position,out _x,out _y);
                 if(_x == x && _y == y){
                     gridObject = activeGridObjects[i];
                     return true;
@@ -203,7 +217,6 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 public struct SaveData{
     public int gridWidth;
     public int gridHeight;
-
     public List<GridObjectSaveData> objectList;
 }
 

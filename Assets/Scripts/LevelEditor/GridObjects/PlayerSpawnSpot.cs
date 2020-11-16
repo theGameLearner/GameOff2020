@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 
-public class WallObject : MonoBehaviour, IGridObject
+public class PlayerSpawnSpot : MonoBehaviour, IGridObject
 {
     #region Variables
         int index;
@@ -18,8 +17,7 @@ public class WallObject : MonoBehaviour, IGridObject
 
         public string GetJsonData()
         {
-            WallData data = new WallData();
-            return JsonConvert.SerializeObject(data);
+            return "";
         }
 
         public void GetXY(out int x, out int y)
@@ -30,7 +28,7 @@ public class WallObject : MonoBehaviour, IGridObject
 
         public void Initialize(string jsonData)
         {
-            WallData data = JsonConvert.DeserializeObject<WallData>(jsonData);
+            GameSettings.instance.playerSpawnSpotTransform = transform;   
         }
 
         public void SetIndex(int index)
@@ -44,10 +42,14 @@ public class WallObject : MonoBehaviour, IGridObject
             this.y = y;
         }
     #endregion
+
+    #region monobehaviour
+        /// <summary>
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
+        void start()
+        {
+            GameSettings.instance.playerSpawnSpotTransform = transform;   
+        }
+    #endregion
 }
-
-[System.Serializable]
-public class WallData{
-
-}
-
