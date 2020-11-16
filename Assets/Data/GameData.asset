@@ -28,6 +28,10 @@ MonoBehaviour:
     index: 4
     prefab: {fileID: 4922268256741393958, guid: b1f5af19e135fca42b5474a0272ae0f1,
       type: 3}
+  - name: Turret 3 Bullets
+    index: 5
+    prefab: {fileID: 2953280463454361657, guid: 54ed49b6bf5d9b3439746de50b5501fc,
+      type: 3}
   defaultGridObject:
     name: Floor2
     index: 0

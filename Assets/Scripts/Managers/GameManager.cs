@@ -61,6 +61,11 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         public void TestLevel(){
             CurrGameState = GameStates.GamePlay;
         }
+
+        public void GameOver()
+	    {
+            Debug.Log("Game Over");
+	    }
     #endregion
 
 }

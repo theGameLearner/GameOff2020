@@ -13,7 +13,7 @@ public class EditorCameraControl : MonoBehaviour
 
         [SerializeField] float LimitTolerance = 2f;
 
-        [SerializeField] float moveSpeed;
+        [SerializeField] float moveSpeed = 5;
 
     #endregion
 

@@ -19,6 +19,11 @@ public class CameraPositioner : MonoBehaviour
 		offset = transform.position - targetTransform.position;
 	}
 
+	private void OnEnable()
+	{
+		offset = transform.position - targetTransform.position;
+	}
+
 	private void Update()
 	{
 		transform.position = targetTransform.position + offset;
