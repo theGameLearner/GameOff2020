@@ -27,12 +27,21 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 
 
 	#region Monobehavior
-	// Start is called before the first frame update
-	void Start()
+	/// <summary>
+	/// Awake is called when the script instance is being loaded.
+	/// </summary>
+	void Awake()
 	{
+		base.Awake();
 		DontDestroyOnLoad(this);
 		GenerateNewGrid(10, 10);
 		activeGridObjects = new List<GameObject>();
+	}
+
+	// Start is called before the first frame update
+	void Start()
+	{
+		
 	}
 
 	// Update is called once per frame
@@ -182,7 +191,22 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 		}
 	}
 
-	public void LoadFromfile(/*string path*/)
+	public void LoadFromfile(string path)
+	{
+		//string path = Application.streamingAssetsPath + "/saveFile.json";
+		string json = "";
+		if (System.IO.File.Exists(path))
+		{
+			json = System.IO.File.ReadAllText(path);
+			load(json);
+		}
+		else
+		{
+			Debug.LogError("no such file or folder : " + path);
+		}
+	}
+
+	public void LoadFromfile()
 	{
 		string path = Application.streamingAssetsPath + "/saveFile.json";
 		string json = "";

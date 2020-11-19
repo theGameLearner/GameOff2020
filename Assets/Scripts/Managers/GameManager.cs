@@ -37,7 +37,15 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         /// </summary>
         void Start()
         {
-            CurrGameState = GameStates.LevelEditor;
+            int mode = PlayerPrefs.GetInt("GameStartState",0);
+            if(mode == 1){
+                string loadPath = PlayerPrefs.GetString("FileToLoad","saveFile.json");
+                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+loadPath);
+                CurrGameState = GameStates.GamePlay;
+            }
+            else{
+                CurrGameState = GameStates.LevelEditor;
+            }
         }
     #endregion
 
@@ -51,7 +59,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             else if(state == GameStates.GamePlay){
                 LevelEditorparent.SetActive(false);
                 GamePlayParent.SetActive(true);
-                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position;
+                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0.2f;
             }
         }
 

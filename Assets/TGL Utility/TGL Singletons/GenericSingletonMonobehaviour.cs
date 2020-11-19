@@ -73,7 +73,7 @@ namespace TGL.Singletons
 
         }
 
-        private void Awake()
+        public void Awake()
         {
             if (_genericInstance == null)
             {
