@@ -26,8 +26,9 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 
 	private Collider myCollider;
 	private bool canFire = true;
-	private float chargeMax = 2;
+	public float chargeMax = 2;
 	private float currCharge;
+	private Vector3 lookAt;
 
 	private static int bulletCount;
 
@@ -59,7 +60,9 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 			return;
 		}
 
-		turretTrans.LookAt(targetTransform);
+		lookAt = targetTransform.position;
+		lookAt.y = turretTrans.position.y;
+		turretTrans.LookAt(lookAt);
 		currCharge += Time.deltaTime;
 
 		if (currCharge > chargeMax)

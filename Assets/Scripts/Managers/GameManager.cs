@@ -60,12 +60,12 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                     testingLevel = true;
                 }
                 currentLevelName = loadFileName;
-                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+loadFileName);
+                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+loadFileName+".json");
                 CurrGameState = GameStates.GamePlay;
             }
             else{
-                if(File.Exists(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName)){
-                    LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName);
+                if(File.Exists(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName+".json")){
+                    LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName+".json");
                 }
                 CurrGameState = GameStates.LevelEditor;
             }
@@ -82,7 +82,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             else if(state == GameStates.GamePlay){
                 LevelEditorparent.SetActive(false);
                 GamePlayParent.SetActive(true);
-                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0.2f;
+                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0.1f;
                 noOfEnemies = GameSettings.instance.NoOfEnemies;
             }
         }
@@ -111,6 +111,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             public void TestLevel(){
                 testingLevel = true;
                 LevelEditorManager.instance.SaveLevel();
+                LevelEditorManager.instance.LoadFromfile();
                 currentLevelName = GameSettings.instance.defaultFileName;
                 CurrGameState = GameStates.GamePlay;
             }
@@ -141,7 +142,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                 SceneManager.LoadScene(0);
             }
             public void LevelEditorBtn(){
-                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName);
+                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName + ".json");
                 CurrGameState = GameStates.LevelEditor;
             }
         #endregion
@@ -149,6 +150,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         public void GameOver()
 	    {
             Debug.Log("Game Over");
+            GameSettings.instance.playerTransform.gameObject.SetActive(false);
             GameOverPanel.SetActive(true);
             if(testingLevel){
                 LevelEditorButton.gameObject.SetActive(true);
@@ -160,6 +162,8 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
 	    }
 
         public void LevelFinished(){
+            // TODO: play cutscene
+            GameSettings.instance.playerTransform.gameObject.SetActive(false);
             GameOverPanel.SetActive(true);
             if(testingLevel){
                 LevelEditorButton.gameObject.SetActive(true);

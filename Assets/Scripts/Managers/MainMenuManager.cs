@@ -58,7 +58,7 @@ public class MainMenuManager : MonoBehaviour
 
         void LoadLevel(string levelFileName){
             PlayerPrefs.SetInt("GameStartState",1);// 0 for level editor , 1 for play level
-            PlayerPrefs.SetString("FileToLoad",levelFileName);
+            PlayerPrefs.SetString("FileToLoad",levelFileName.Split('.')[0]);
             SceneManager.LoadScene(1);
         }   
     #endregion

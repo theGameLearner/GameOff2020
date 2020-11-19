@@ -28,6 +28,6 @@ public class GameSettings : GenericSingletonMonobehaviour<GameSettings>
 
     public int NoOfEnemies;
 
-    public string defaultFileName = "SaveFile.json";
+    public string defaultFileName = "saveFile";
 
 }

@@ -22,7 +22,7 @@ MonoBehaviour:
     prefab: {fileID: 321409616371089119, guid: 2a320c073ab9c7445941068d2714ac5f, type: 3}
   - name: Turret
     index: 3
-    prefab: {fileID: 3947201696498973174, guid: c4642263ede38a64e87911f1e236112e,
+    prefab: {fileID: 8555958952997475657, guid: 2e9abddeb5d2c5f4ab9a9b6c0e69e14a,
       type: 3}
   - name: PlayerSpawnSpot
     index: 4
@@ -30,7 +30,7 @@ MonoBehaviour:
       type: 3}
   - name: Turret 3 Bullets
     index: 5
-    prefab: {fileID: 2953280463454361657, guid: 54ed49b6bf5d9b3439746de50b5501fc,
+    prefab: {fileID: 2440232975840701491, guid: 456786e5d0d503740bfaf1f75515845f,
       type: 3}
   - name: Lightsaber Turret
     index: 6

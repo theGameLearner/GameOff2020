@@ -189,7 +189,7 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 		{
 			IGridObject spawnedObject = SpawnGridObject(objectData.x, objectData.y, objectData.index);
 			spawnedObject.Initialize(objectData.objectData);
-			if(spawnedObject.GetType() == typeof(IDestroyableEnemy)){
+			if(spawnedObject is IDestroyableEnemy){
 				noOfEnemies++;
 			}
 		}
@@ -213,7 +213,7 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 
 	public void LoadFromfile()
 	{
-		string path = Application.streamingAssetsPath + "/saveFile.json";
+		string path = Application.streamingAssetsPath + '/'+GameSettings.instance.defaultFileName + ".json";
 		string json = "";
 		if (System.IO.File.Exists(path))
 		{
