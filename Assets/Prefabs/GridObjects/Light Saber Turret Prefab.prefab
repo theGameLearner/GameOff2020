@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 6940406912629983611}
   - component: {fileID: 6940406912629983610}
   m_Layer: 0
-  m_Name: Lazer Turret Prefab
+  m_Name: Light Saber Turret Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -449,7 +449,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6940406913907724493}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5000001
   m_Height: 2

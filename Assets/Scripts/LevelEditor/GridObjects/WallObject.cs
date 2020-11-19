@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
+[RequireComponent(typeof(Collider))]
 public class WallObject : MonoBehaviour, IGridObject
 {
+
     #region Variables
+    public bool canBeDestroyed;
+    public Transform wallRenderTrans;
         int index;
         int x;
         int y;
+    Collider myCollider;
     #endregion
     #region Interface
-        public int GetIndex()
+    public int GetIndex()
         {
             return index;
         }
@@ -43,11 +48,31 @@ public class WallObject : MonoBehaviour, IGridObject
             this.x = x;
             this.y = y;
         }
-    #endregion
+	#endregion
+
+	private void Start()
+	{
+        myCollider = GetComponent<Collider>();
+    }
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		if(canBeDestroyed && collision.transform == GameSettings.instance.playerTransform)
+		{
+            if(wallRenderTrans != null)
+			{
+                wallRenderTrans.gameObject.SetActive(false);
+			}
+            myCollider.enabled = false;
+
+        }
+	}
 }
 
 [System.Serializable]
 public class WallData{
+
+
 
 }
 
