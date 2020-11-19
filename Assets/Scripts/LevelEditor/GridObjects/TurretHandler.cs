@@ -13,7 +13,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 [RequireComponent(typeof(Collider))]
-public class TurretHandler : MonoBehaviour, IGridObject
+public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 {
 	public int bulletIndexInPool;
 	public float bulletLife;
@@ -118,6 +118,7 @@ public class TurretHandler : MonoBehaviour, IGridObject
 		turretTrans.gameObject.SetActive(false);
 		myCollider.enabled = false;
 		canFire = false;
+		GameManager.instance.EnemyDestroyed();
 	}
 
 	public void Revive()

@@ -33,7 +33,6 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 	void Awake()
 	{
 		base.Awake();
-		DontDestroyOnLoad(this);
 		GenerateNewGrid(10, 10);
 		activeGridObjects = new List<GameObject>();
 	}
@@ -147,9 +146,11 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 	#endregion
 
 	#region public methods
-	public void SaveGame()
+	public void SaveLevel(string fileName = null)
 	{
-
+		if(fileName == null){
+			fileName = GameSettings.instance.defaultFileName;
+		}
 		SaveData saveData = new SaveData();
 		saveData.gridWidth = GameSettings.instance.levelGrid.Width;
 		saveData.gridHeight = GameSettings.instance.levelGrid.Height;
@@ -172,7 +173,7 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 
 		string json = JsonConvert.SerializeObject(saveData);
 		Debug.Log(json);
-		SaveFile(json, Application.streamingAssetsPath + "/saveFile.json");
+		SaveFile(json, Application.streamingAssetsPath + "/"+ fileName+".json");
 
 
 	}
@@ -183,12 +184,16 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 		SaveData loadData = JsonConvert.DeserializeObject<SaveData>(json);
 		ClearGrid();
 		GenerateNewGrid(loadData.gridWidth, loadData.gridHeight);
-
+		int noOfEnemies = 0;
 		foreach (GridObjectSaveData objectData in loadData.objectList)
 		{
 			IGridObject spawnedObject = SpawnGridObject(objectData.x, objectData.y, objectData.index);
 			spawnedObject.Initialize(objectData.objectData);
+			if(spawnedObject.GetType() == typeof(IDestroyableEnemy)){
+				noOfEnemies++;
+			}
 		}
+		GameSettings.instance.NoOfEnemies = noOfEnemies;
 	}
 
 	public void LoadFromfile(string path)

@@ -2,17 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TGL.Singletons;
-using System;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.IO;
 
 public class GameManager : GenericSingletonMonobehaviour<GameManager>
 {
     #region variables
+        [Header("UI")]
+        [SerializeField] GameObject GameOverPanel;
+        [SerializeField] GameObject SavePanel;
+        [SerializeField] Button saveButton;
+        [SerializeField] Button LevelEditorButton;
+
+        [SerializeField] InputField SaveFileNameInput;
+
+        [SerializeField] Text SaveErrorText;
+
+        [Header("save and load")]
         [SerializeField] GameObject LevelEditorparent;
         [SerializeField] GameObject GamePlayParent;
-
-        [SerializeField] string FilepathToLoad;
+        int noOfEnemies;
+        string FilepathToLoad;
 
         GameStates currGameState;
+        string currentLevelName;
+        bool testingLevel;
+
         
     #endregion
 
@@ -23,7 +39,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             }
             set{
                 currGameState = value;
-                SwitchState(value);
+                InitializeState(value);
             }
         }
 
@@ -39,18 +55,25 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         {
             int mode = PlayerPrefs.GetInt("GameStartState",0);
             if(mode == 1){
-                string loadPath = PlayerPrefs.GetString("FileToLoad","saveFile.json");
-                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+loadPath);
+                string loadFileName = PlayerPrefs.GetString("FileToLoad",GameSettings.instance.defaultFileName);
+                if(loadFileName == GameSettings.instance.defaultFileName){
+                    testingLevel = true;
+                }
+                currentLevelName = loadFileName;
+                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+loadFileName);
                 CurrGameState = GameStates.GamePlay;
             }
             else{
+                if(File.Exists(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName)){
+                    LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName);
+                }
                 CurrGameState = GameStates.LevelEditor;
             }
         }
     #endregion
 
     #region Private Methods
-        private void SwitchState(GameStates state)
+        private void InitializeState(GameStates state)
         {
             if(state == GameStates.LevelEditor){
                 LevelEditorparent.SetActive(true);
@@ -60,20 +83,101 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                 LevelEditorparent.SetActive(false);
                 GamePlayParent.SetActive(true);
                 GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0.2f;
+                noOfEnemies = GameSettings.instance.NoOfEnemies;
             }
+        }
+
+        bool CheckIfFileNameExists(string fileName){
+
+            if(fileName == GameSettings.instance.defaultFileName){
+                return false;
+            }
+
+            DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath);
+            FileInfo[] Files = d.GetFiles("*.json");
+            foreach(FileInfo file in Files )
+            {
+                if(fileName+".json" == file.Name){
+                    return true;
+                }
+            }
+            return false;
         }
 
     #endregion
 
     #region public methods
-        public void TestLevel(){
-            CurrGameState = GameStates.GamePlay;
-        }
+        #region buttons
+            public void TestLevel(){
+                testingLevel = true;
+                LevelEditorManager.instance.SaveLevel();
+                currentLevelName = GameSettings.instance.defaultFileName;
+                CurrGameState = GameStates.GamePlay;
+            }
+
+            public void Retry(){
+                PlayerPrefs.SetInt("GameStartState",1);// 0 for level editor , 1 for play level
+                PlayerPrefs.SetString("FileToLoad",currentLevelName);
+                SceneManager.LoadScene(1);
+            }
+
+            public void SaveLevelOnComplete(){
+
+                string fileName = SaveFileNameInput.text;
+                if(fileName!="" && !CheckIfFileNameExists(fileName + ".json")){
+                    LevelEditorManager.instance.SaveLevel(fileName);
+                    SavePanel.SetActive(false);
+                }
+                else{
+                    SaveErrorText.text = "Invalid file name or file already exist";
+                }
+            }
+
+            public void SaveButton(){
+                SavePanel.SetActive(true);
+            }
+
+            public void MainMenu(){
+                SceneManager.LoadScene(0);
+            }
+            public void LevelEditorBtn(){
+                LevelEditorManager.instance.LoadFromfile(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName);
+                CurrGameState = GameStates.LevelEditor;
+            }
+        #endregion
 
         public void GameOver()
 	    {
             Debug.Log("Game Over");
+            GameOverPanel.SetActive(true);
+            if(testingLevel){
+                LevelEditorButton.gameObject.SetActive(true);
+            }
+            else{
+                LevelEditorButton.gameObject.SetActive(false);
+            }
+            saveButton.gameObject.SetActive(false);
 	    }
+
+        public void LevelFinished(){
+            GameOverPanel.SetActive(true);
+            if(testingLevel){
+                LevelEditorButton.gameObject.SetActive(true);
+                saveButton.gameObject.SetActive(true);
+            }
+            else{
+                LevelEditorButton.gameObject.SetActive(false);
+                saveButton.gameObject.SetActive(false);
+            }
+
+        }
+
+        public void EnemyDestroyed(){
+            noOfEnemies--;
+            if(noOfEnemies<=0){
+                LevelFinished();
+            }
+        }
     #endregion
 
 }

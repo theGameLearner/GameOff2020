@@ -26,4 +26,8 @@ public class GameSettings : GenericSingletonMonobehaviour<GameSettings>
 
     public Transform playerSpawnSpotTransform;
 
+    public int NoOfEnemies;
+
+    public string defaultFileName = GameSettings.instance.defaultFileName;
+
 }
