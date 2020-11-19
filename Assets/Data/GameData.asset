@@ -32,6 +32,21 @@ MonoBehaviour:
     index: 5
     prefab: {fileID: 2953280463454361657, guid: 54ed49b6bf5d9b3439746de50b5501fc,
       type: 3}
+  - name: Lightsaber Turret
+    index: 6
+    prefab: {fileID: 6940406912629983609, guid: 30458264b305b3e45bc90d61fa6eb3ae,
+      type: 3}
+  - name: DoubleLaser Turret
+    index: 7
+    prefab: {fileID: 660484577698877953, guid: 1ad57f71bb08adf4589975cba165d599, type: 3}
+  - name: Destructible Wall
+    index: 8
+    prefab: {fileID: 3687538908205278108, guid: 60ddebbfdc30ff7459b4373ad04d5639,
+      type: 3}
+  - name: Kill wall
+    index: 9
+    prefab: {fileID: 6264150441451429759, guid: 1011d4d8ab3bbe640b184e3e6fa5865d,
+      type: 3}
   defaultGridObject:
     name: Floor2
     index: 0

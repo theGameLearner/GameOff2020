@@ -12,7 +12,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
 [RequireComponent(typeof(Collider))]
-public class DoubleLazerTurretHandler : MonoBehaviour
+public class DoubleLazerTurretHandler : MonoBehaviour,IGridObject
 {
 	public float ratationSpeed = 5;
 	public int lazerSize = 5;
@@ -24,6 +24,46 @@ public class DoubleLazerTurretHandler : MonoBehaviour
 	private Vector3 startLazerPoint;
 	private Vector3 endLazerPoint;
 	private Vector3 lazerOrigin;
+
+	#region IgridObject
+		
+		int index;
+		int x;
+		int y;
+
+		public int GetIndex()
+		{
+			return index;
+		}
+
+		public string GetJsonData()
+		{
+			return "";
+		}
+
+		public void GetXY(out int x, out int y)
+		{
+			x = this.x;
+			y = this.y;
+		}
+
+		public void Initialize(string jsonData)
+		{
+			
+		}
+
+		public void SetIndex(int index)
+		{
+			this.index = index;
+		}
+
+		public void SetXY(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+
+	#endregion
 
 	private void Start()
 	{
