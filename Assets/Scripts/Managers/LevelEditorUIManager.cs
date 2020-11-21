@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class LevelEditorUIManager : MonoBehaviour
+using TGL.Singletons;
+public class LevelEditorUIManager : GenericSingletonMonobehaviour<LevelEditorUIManager>
 {
     #region Variables
         [SerializeField] InputField GridLength;
@@ -42,12 +42,13 @@ public class LevelEditorUIManager : MonoBehaviour
     #endregion
 
     #region privateMethods
-        void displayMessage(string message){
-            messagetext.text = message;
-        }
+        
     #endregion
 
     #region Public methods
+        public void displayMessage(string message){
+            messagetext.text = message;
+        }
         #region buttons
             public void createGrid(){
                 int width;

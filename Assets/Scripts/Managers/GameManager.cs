@@ -109,6 +109,9 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
     #region public methods
         #region buttons
             public void TestLevel(){
+                if(!LevelEditorManager.instance.IsLevelPlayable()){
+                    return;
+                }
                 testingLevel = true;
                 LevelEditorManager.instance.SaveLevel();
                 LevelEditorManager.instance.LoadFromfile();

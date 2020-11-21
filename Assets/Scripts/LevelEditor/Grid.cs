@@ -72,7 +72,7 @@ public class Grid<TGridObject>
         }
 
         public Vector3 GetGridPosition(int x,int y){
-            if(x >= 0 && x < width && y >= 0 && y < height){
+            if(x >= -1 && x < width+1 && y >= -1 && y < height+1){
                 return new Vector3(origin.x + x*cellSize + cellSize/2,origin.y,origin.z + y*cellSize + cellSize/2);
             }
             else{

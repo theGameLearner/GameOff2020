@@ -572,6 +572,7 @@ MonoBehaviour:
   gameData: {fileID: 11400000, guid: 9b72526463b45294ab9bdf5a43a76732, type: 2}
   playerSpawnSpotTransform: {fileID: 0}
   NoOfEnemies: 0
+  defaultFileName: saveFile
 --- !u!4 &164425275
 Transform:
   m_ObjectHideFlags: 0
@@ -1465,6 +1466,7 @@ MonoBehaviour:
   LevelParent: {fileID: 2135042695}
   LevelObjectsParent: {fileID: 1995763878}
   cellSize: 1
+  KillWallIndex: 9
   selectedGridObject:
     name: 
     index: 0

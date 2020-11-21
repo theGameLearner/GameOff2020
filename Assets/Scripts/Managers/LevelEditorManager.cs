@@ -16,6 +16,8 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 	[SerializeField] Transform LevelObjectsParent;
 	[SerializeField] float cellSize = 5;
 
+	[SerializeField] int KillWallIndex;
+
 	List<GameObject> activeGridObjects;
 
 	[HideInInspector]
@@ -71,6 +73,10 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 	{
 		GridObject objectToPlace = GameSettings.instance.gameData.GetGridObject(index);
 		Vector3 pos = GameSettings.instance.levelGrid.GetGridPosition(x, y);
+		if(pos == Vector3.zero){
+			Debug.LogError("coordinates out of bounds");
+			return null;
+		}
 		GameObject existingGridObject;
 		if (TryGetGridObjectAtposition(x, y, out existingGridObject))
 		{
@@ -146,6 +152,52 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 	#endregion
 
 	#region public methods
+	public bool IsLevelPlayable(){
+		
+		if(playerSpawnSpot == null){
+			LevelEditorUIManager.instance.displayMessage("Please Place a player SpawnSpot");
+			return false;
+		}
+
+		int noOfEnemies = 0;
+		for (int i = 0; i < activeGridObjects.Count; i++)
+		{
+			if(activeGridObjects[i].GetComponent<IGridObject>() is IDestroyableEnemy){
+				noOfEnemies++;
+			}
+		}
+		if(noOfEnemies == 0){
+			LevelEditorUIManager.instance.displayMessage("Please Place atleast one destroyable enemy");
+			return false;
+		}
+		int count = activeGridObjects.Count;
+		for (int i = 0; i < count; i++)
+		{
+			IGridObject iGridObject = activeGridObjects[i].GetComponent<IGridObject>();
+			           
+			if(!(iGridObject is WallObject)){
+				int _x,_y;
+				iGridObject.GetXY(out _x,out _y);
+				GameObject go;
+				if(!TryGetGridObjectAtposition(_x+1, _y,out go)){
+					SpawnGridObject(_x+1,_y,KillWallIndex);
+				}
+				if(!TryGetGridObjectAtposition(_x-1, _y,out go)){
+					SpawnGridObject(_x-1,_y,KillWallIndex);
+				}
+				if(!TryGetGridObjectAtposition(_x, _y+1,out go)){
+					SpawnGridObject(_x,_y+1,KillWallIndex);
+				}
+				if(!TryGetGridObjectAtposition(_x, _y-1,out go)){
+					SpawnGridObject(_x,_y-1,KillWallIndex);
+				}
+			}
+			 
+			
+		}
+
+		return true;
+	}
 	public void SaveLevel(string fileName = null)
 	{
 		if(fileName == null){
@@ -239,7 +291,9 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 		int _x; int _y;
 		for (int i = 0; i < activeGridObjects.Count; i++)
 		{
-			GameSettings.instance.levelGrid.GetXY(activeGridObjects[i].transform.position, out _x, out _y);
+			if(!GameSettings.instance.levelGrid.GetXY(activeGridObjects[i].transform.position, out _x, out _y)){
+				continue;
+			}
 			if (_x == x && _y == y)
 			{
 				gridObject = activeGridObjects[i];
