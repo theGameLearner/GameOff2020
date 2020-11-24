@@ -5,3 +5,4 @@
 - [Stylized Terrain Texture](https://assetstore.unity.com/packages/2d/textures-materials/floors/stylized-terrain-texture-153469)
 - [Stylize Rock Texture](https://assetstore.unity.com/packages/2d/textures-materials/floors/stylize-rock-texture-153452)
 - [Forceling World Grid](https://assetstore.unity.com/packages/tools/forceling-world-grid-113963)
+- [Firebase-Database-REST-API](https://github.com/rotolonico/Firebase-Database-REST-API)
