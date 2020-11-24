@@ -14,15 +14,11 @@ using UnityEngine;
 public class UserDetails
 {
     public int uId;
-    public string uFirstName;
-    public string uSurname;
     public string userName;
     public string uPass;
 
-    public UserDetails(string firstName, string surname, string uName, string password)
+    public UserDetails (string uName, string password)
     {
-        this.uFirstName = firstName;
-        this.uSurname = surname;
         this.userName = uName;
         this.uPass = password;
     }

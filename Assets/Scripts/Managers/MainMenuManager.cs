@@ -28,6 +28,10 @@ public class MainMenuManager : MonoBehaviour
     #endregion
 
     #region Public methods
+
+        public void FetchOnlineFiles(){
+            DBCommunicator.GetAllLevels(GetOnlineLevelsCallback);
+        }
         public void LoadlevelButton(){
             FileCanvas.SetActive(true);
             MenuCanvas.SetActive(false);
@@ -60,6 +64,19 @@ public class MainMenuManager : MonoBehaviour
             PlayerPrefs.SetInt("GameStartState",1);// 0 for level editor , 1 for play level
             PlayerPrefs.SetString("FileToLoad",levelFileName.Split('.')[0]);
             SceneManager.LoadScene(1);
+        }
+
+        void GetOnlineLevelsCallback(List<LevelDetails> levels){
+
+            foreach (LevelDetails level in levels)
+            {
+                string data = level.levelJson;
+                string path = Application.streamingAssetsPath + '/' + level.levelName + ".json";
+                if(File.Exists(path)){
+                    File.Delete(path);
+                }
+                File.WriteAllText(path,data);
+            }
         }   
     #endregion
 }

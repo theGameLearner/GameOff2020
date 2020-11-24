@@ -8,7 +8,7 @@ public class Main : MonoBehaviour
 	private void Start()
 	{
 		Debug.Log("Start Called");
-		UserDetails newUser = new UserDetails("The", "Developer", "newDeveloper", "gameOff2020");
+		UserDetails newUser = new UserDetails( "newDeveloper", "gameOff2020");
 
 		//Register the new User
 		RegisterClicked(newUser);
@@ -63,8 +63,6 @@ public class Main : MonoBehaviour
 	public void RegisterToPlayerPref(UserDetails newUserDetails)
 	{
 		PlayerPrefs.SetInt("pp_u_id", newUserDetails.uId);
-		PlayerPrefs.SetString("pp_u_fName", newUserDetails.uFirstName);
-		PlayerPrefs.SetString("pp_u_lName", newUserDetails.uSurname);
 		PlayerPrefs.SetString("pp_u_username", newUserDetails.userName);
 		PlayerPrefs.SetString("pp_u_password", newUserDetails.uPass);
 

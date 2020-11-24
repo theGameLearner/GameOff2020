@@ -5,6 +5,8 @@ using TGL.Singletons;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.IO;
+using System.Text.RegularExpressions;
+using System;
 
 public class GameManager : GenericSingletonMonobehaviour<GameManager>
 {
@@ -29,6 +31,8 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         string currentLevelName;
         bool testingLevel;
 
+        string[] RestrictedLevelNames = {"saveFile","Level1"};
+ 
         
     #endregion
 
@@ -89,6 +93,18 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
 
         bool CheckIfFileNameExists(string fileName){
 
+            Regex r = new Regex("^[a-zA-Z][a-zA-Z0-9]*$");
+            if(!r.IsMatch(fileName)){
+                return false;
+            }
+
+            foreach (string name in RestrictedLevelNames)
+            {
+                if(name == fileName){
+                    return false;
+                }
+            }
+
             if(fileName == GameSettings.instance.defaultFileName){
                 return false;
             }
@@ -102,6 +118,18 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                 }
             }
             return false;
+        }
+
+        private void UploadToServer(string fileName)
+        {
+            string path = Application.streamingAssetsPath + '/' + fileName + ".json";
+            string data = File.ReadAllText(path);
+            LevelDetails levelDetails = new LevelDetails(fileName,data);
+            DBCommunicator.StoreLevel(levelDetails,LevelSavedcallback);
+        }
+
+        void LevelSavedcallback(){
+            Debug.Log("level saved");
         }
 
     #endregion
@@ -128,15 +156,16 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             public void SaveLevelOnComplete(){
 
                 string fileName = SaveFileNameInput.text;
-                if(fileName!="" && !CheckIfFileNameExists(fileName + ".json")){
+                if(fileName!="" && !CheckIfFileNameExists(fileName)){
                     LevelEditorManager.instance.SaveLevel(fileName);
-                    SavePanel.SetActive(false);
+                    UploadToServer(fileName);
+                    //TODO: show confirmation of save
+                    MainMenu();
                 }
                 else{
                     SaveErrorText.text = "Invalid file name or file already exist";
                 }
             }
-
             public void SaveButton(){
                 SavePanel.SetActive(true);
             }
