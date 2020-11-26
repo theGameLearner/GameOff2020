@@ -83,6 +83,7 @@ public class LazerTurretHandler : MonoBehaviour,IGridObject,IDestroyableEnemy
 	{
 		turretTrans.gameObject.SetActive(false);
 		myCollider.enabled = false;
+		GameManager.instance.EnemyDestroyed();
 	}
 
 	public void Revive()
