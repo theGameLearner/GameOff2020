@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class EditorCameraControl : MonoBehaviour
 {
     #region variables
@@ -11,6 +12,12 @@ public class EditorCameraControl : MonoBehaviour
         float yMinLimit;
         float yMaxLimit;
 
+        Camera camera;
+        [SerializeField] float minOrthographicSize = 20f;
+
+        [SerializeField] float zoomRate = 1f;
+
+        [SerializeField] float maxOrthographicSize = 40f;
         [SerializeField] float LimitTolerance = 2f;
 
         [SerializeField] float moveSpeed = 5;
@@ -18,11 +25,31 @@ public class EditorCameraControl : MonoBehaviour
     #endregion
 
     #region monobehaviour
+
+        /// <summary>
+        /// Start is called on the frame when a script is enabled just before
+        /// any of the Update methods is called the first time.
+        /// </summary>
+        void Start()
+        {
+            camera = GetComponent<Camera>();
+            camera.orthographicSize = maxOrthographicSize;
+        }
         /// <summary>
         /// Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
         void Update()
         {
+            //zoom out
+            if(Input.mouseScrollDelta.y < 0){
+                camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + zoomRate,minOrthographicSize,maxOrthographicSize);
+            }
+            
+            //zoom in
+            if(Input.mouseScrollDelta.y > 0){
+                camera.orthographicSize = Mathf.Clamp(camera.orthographicSize - zoomRate,minOrthographicSize,maxOrthographicSize);
+            }
+
             if(Input.GetKey(KeyCode.W)){
                 Vector3 newPos = transform.position;
                 newPos += Vector3.forward * moveSpeed*Time.deltaTime;
