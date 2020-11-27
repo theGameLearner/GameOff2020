@@ -15,6 +15,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
+    public float bounceSpeed;
     public Transform camTrans;
 
     Vector3 reflectionDirection;
@@ -30,36 +31,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        //KeyboardInput();
-
-    }
-
-	private void KeyboardInput()
-	{
-        camForward = camTrans.forward;
-        camForward.y = 0;
-        camForward.Normalize();
-
-        camRight = camTrans.right;
-        camRight.y = 0;
-        camRight.Normalize();
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            myRb.velocity = camForward * speed;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            myRb.velocity = -1 * camForward * speed;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            myRb.velocity = -1 * camRight * speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            myRb.velocity = camRight * speed;
-        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Break();
@@ -73,6 +44,14 @@ public class PlayerMovement : MonoBehaviour
         if (travelDirection.magnitude > 0)
         {
             myRb.velocity = travelDirection * speed;
+        }
+    }
+
+    public void BouncePlayerSpeed()
+    {
+        if (travelDirection.magnitude > 0 && bounceSpeed > 1)
+        {
+            myRb.velocity = myRb.velocity.normalized * bounceSpeed;
         }
     }
 

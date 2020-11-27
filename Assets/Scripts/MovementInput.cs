@@ -134,4 +134,12 @@ public class MovementInput : MonoBehaviour
         travelDirection = travelDirection.normalized;
         return travelDirection;
     }
+
+	private void OnCollisionExit(Collision collision)
+	{
+		if(collision.transform.GetComponent<WallObject>() != null)
+		{
+            playerMovementScript.BouncePlayerSpeed();
+        }
+	}
 }

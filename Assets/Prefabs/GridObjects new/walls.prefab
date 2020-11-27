@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canBeDestroyed: 0
-  wallRenderTrans: {fileID: 0}
+  wallRenderTrans: {fileID: 6871154976284907540}
 --- !u!1 &295737302625045482
 GameObject:
   m_ObjectHideFlags: 0
