@@ -49,6 +49,12 @@ public class MainMenuManager : MonoBehaviour
     #endregion
     #region Private methods
         void FetchFiles(){
+
+            foreach (Transform t in FileButtonContainer.transform)
+            {
+                Destroy(t.gameObject);
+            }
+
             DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath);
             FileInfo[] Files = d.GetFiles("*.json");
             foreach(FileInfo file in Files )
