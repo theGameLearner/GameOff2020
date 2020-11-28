@@ -13,7 +13,9 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
     #region variables
         [Header("UI")]
         [SerializeField] GameObject GameOverPanel;
+        [SerializeField] GameObject LevelCompletePanel;
         [SerializeField] GameObject SavePanel;
+        [SerializeField] Text HeadingText;
         [SerializeField] Button saveButton;
         [SerializeField] Button LevelEditorButton;
 
@@ -197,6 +199,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             // TODO: play cutscene
             GameSettings.instance.playerTransform.gameObject.SetActive(false);
             GameOverPanel.SetActive(true);
+            HeadingText.text = "Congratulations !!\n Level Complete";
             if(testingLevel){
                 LevelEditorButton.gameObject.SetActive(true);
                 saveButton.gameObject.SetActive(true);
