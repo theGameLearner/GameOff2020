@@ -27,7 +27,7 @@ public class MovementInput : MonoBehaviour
     Vector3 mouseStartPos;
     Vector3 mouseEndPos;
     Vector3 mousePos;
-
+    Vector3 lastFrameVelocityDir;
 
     void Start()
     {
@@ -39,6 +39,7 @@ public class MovementInput : MonoBehaviour
 
     void Update()
     {
+        lastFrameVelocityDir = GetComponent<Rigidbody>().velocity.normalized;
         _mouseDown = Input.GetMouseButton(0);
         mousePos = Input.mousePosition;
         
@@ -142,4 +143,17 @@ public class MovementInput : MonoBehaviour
             playerMovementScript.BouncePlayerSpeed();
         }
 	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+        if(collision.transform.parent.GetComponent<floor>() != null)
+		{
+            //we collide with floor.
+            return;
+		}
+        Debug.Log("collided with " + collision.transform.name, collision.transform);
+        Vector3 collisionNormal = collision.contacts[0].normal;
+        var direction = Vector3.Reflect(lastFrameVelocityDir.normalized, collisionNormal);
+        playerMovementScript.ChangePlayerDirection(direction.normalized);
+    }
 }
