@@ -355,6 +355,7 @@ GameObject:
   - component: {fileID: 509025106401399325}
   - component: {fileID: 2602275139627505737}
   - component: {fileID: 1410618374877859695}
+  - component: {fileID: 8778282052978585139}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
@@ -402,7 +403,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a20b341e72f832a4bb239813ec71fe52, type: 2}
+  - {fileID: 2100000, guid: d66c97ecaef80b342ba302d6a7101903, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -435,6 +436,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 028d3d0fb1b4e9f4085e8c0019041c4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &8778282052978585139
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6828289382440472988}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.03
+  m_Height: 1.155571
+  m_Direction: 0
+  m_Center: {x: -1.1605635, y: 0.35514498, z: 0}
 --- !u!1 &6940406912290419313
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,7 +651,7 @@ GameObject:
   - component: {fileID: 6940406912629983611}
   - component: {fileID: 6940406912629983610}
   m_Layer: 0
-  m_Name: Light Saber Turret Prefab
+  m_Name: Light Saber Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

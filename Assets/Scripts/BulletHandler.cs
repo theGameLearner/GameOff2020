@@ -13,10 +13,24 @@ using UnityEngine;
 public class BulletHandler : MonoBehaviour
 {
 	TrailRenderer tRenderer;
+
+	Rigidbody rigidbody;
+
+	[SerializeField] int muzzleFlashVfxIndex;
+	[SerializeField] int HitVfxIndex;
 	const float faddeOutTime = 0.1f;
-	private void Start()
+
+	/// <summary>
+	/// Awake is called when the script instance is being loaded.
+	/// </summary>
+	void Awake()
 	{
 		tRenderer = transform.GetComponent<TrailRenderer>();
+		rigidbody = GetComponent<Rigidbody>();
+	}
+	private void Start()
+	{
+
 		if (tRenderer != null)
 		{
 			tRenderer.Clear();
@@ -26,6 +40,11 @@ public class BulletHandler : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if(rigidbody.velocity!=Vector3.zero){
+			GameObject muzzleFlashGo = ObjectPool.instance.GetPooledObject(muzzleFlashVfxIndex);
+			muzzleFlashGo.transform.position = transform.position;
+			muzzleFlashGo.SetActive(true);
+		}
 		if (tRenderer != null)
 		{
 			tRenderer.Clear();
@@ -34,6 +53,11 @@ public class BulletHandler : MonoBehaviour
 
 	private void OnDisable()
 	{
+		if(rigidbody.velocity!=Vector3.zero){
+			GameObject muzzleFlashGo = ObjectPool.instance.GetPooledObject(muzzleFlashVfxIndex);
+			muzzleFlashGo.transform.position = transform.position;
+			muzzleFlashGo.SetActive(true);
+		}
 		if (tRenderer != null)
 		{
 			tRenderer.Clear();
@@ -43,7 +67,11 @@ public class BulletHandler : MonoBehaviour
 	private void OnCollisionEnter(Collision collision)
 	{
 		//Debug.Log("bullet collided with " + collision.transform.name);
-
+		GameObject hitVfxGo = ObjectPool.instance.GetPooledObject(HitVfxIndex);
+		hitVfxGo.transform.position = transform.position;
+		hitVfxGo.transform.SetParent(null,true);
+		hitVfxGo.SetActive(true);
+		
 		if(collision.transform == GameSettings.instance.playerTransform)
 		{
 			Debug.Log("Hit with player, need to call Game Over");

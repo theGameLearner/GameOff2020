@@ -104,7 +104,7 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 			Debug.LogError("Bullet must have a rigidbody assigned");
 			return;
 		}
-
+		bullet.transform.rotation *= Quaternion.FromToRotation(Vector3.forward,bulletStartPos.forward);
 		bulletRB.velocity = bulletStartPos.forward * GameSettings.instance.bulletSpeed;
 	}
 

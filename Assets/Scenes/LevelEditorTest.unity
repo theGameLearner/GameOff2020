@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45083672, g: 0.5007501, b: 0.5746714, a: 1}
+  m_IndirectSpecularColor: {r: 0.45083642, g: 0.50074977, b: 0.57467103, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -529,6 +529,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolList:
+  - ObjectToPool: {fileID: 1291653246976116, guid: 234e811611aa856468553aee90855a8d,
+      type: 3}
+    pooledObject: []
+    maxCount: 15
+    shouldExpand: 1
+    poolParent: {fileID: 1835818783}
+  - ObjectToPool: {fileID: 1594239829313766, guid: 26b29734bf3bebe4fb390f7cb3db7530,
+      type: 3}
+    pooledObject: []
+    maxCount: 15
+    shouldExpand: 1
+    poolParent: {fileID: 1835818783}
   - ObjectToPool: {fileID: 5210676108279158358, guid: 88ea3d264dab4aa46b7261ac6890eadc,
       type: 3}
     pooledObject: []
@@ -569,7 +581,7 @@ MonoBehaviour:
     type: 3}
   bulletSpeed: 10
   bulletLifeTime: 1
-  bulletPoolIndex: 0
+  bulletPoolIndex: 2
   gameData: {fileID: 11400000, guid: 9b72526463b45294ab9bdf5a43a76732, type: 2}
   playerSpawnSpotTransform: {fileID: 0}
   NoOfEnemies: 0
@@ -7790,7 +7802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1835818782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1000, y: -1000, z: -1000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 164425275}
@@ -7899,8 +7911,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.25
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -8022,7 +8034,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -8215,8 +8227,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.25
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4515153655497053591}
   - component: {fileID: 3267505423723843147}
   - component: {fileID: 289795925570284321}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GridRepresentSquare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 586269171329779402}
   - component: {fileID: 3840120996607239677}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: lineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: b29131b27f1a4a74b922ae416865cff1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
