@@ -24,13 +24,32 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 camForward;
     Vector3 camRight;
+
+    Transform playerRendererTrans;
+    Transform rotationTransform;
     void Start()
     {
         myRb = GetComponent<Rigidbody>();
+
+        if(transform.GetChild(0) != null)
+		{
+            playerRendererTrans = transform.GetChild(0);
+            rotationTransform = new GameObject().transform;
+            rotationTransform.parent = transform;
+        }
+
     }
 
     void Update()
     {
+        if(playerRendererTrans != null)
+		{
+            rotationTransform.forward = travelDirection;
+
+            playerRendererTrans.Rotate(rotationTransform.right, speed*Time.timeScale * (myRb.velocity.magnitude / speed), Space.World);
+			//playerRendererTrans.right = travelDirection.normalized;
+
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Break();
