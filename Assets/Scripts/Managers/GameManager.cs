@@ -86,7 +86,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             else if(state == GameStates.GamePlay){
                 LevelEditorparent.SetActive(false);
                 GamePlayParent.SetActive(true);
-                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0.1f;
+                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0f;
                 noOfEnemies = GameSettings.instance.NoOfEnemies;
             }
         }
