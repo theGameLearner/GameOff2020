@@ -42,10 +42,17 @@ MonoBehaviour:
     index: 8
     prefab: {fileID: 3687538908205278108, guid: 60ddebbfdc30ff7459b4373ad04d5639,
       type: 3}
-  - name: Kill wall
+  - name: Kill Wall
     index: 9
     prefab: {fileID: 6264150441451429759, guid: 1011d4d8ab3bbe640b184e3e6fa5865d,
       type: 3}
+  - name: Power Core
+    index: 10
+    prefab: {fileID: 1200272041102769868, guid: 005ae53511968bc47b2648894d9d5871,
+      type: 3}
+  - name: Delete
+    index: 11
+    prefab: {fileID: 0}
   defaultGridObject:
     name: Floor2
     index: 0

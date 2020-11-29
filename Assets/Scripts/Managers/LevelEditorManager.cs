@@ -58,7 +58,12 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 			Debug.Log("world pos from leCamera = " + worldPos);
 			if (GameSettings.instance.levelGrid.GetXY(worldPos, out x, out y))
 			{
-				SpawnGridObject(x, y, selectedGridObject.index);
+				if(selectedGridObject.name == "Delete"){
+					RemoveGridObject(x,y);
+				}
+				else{
+					SpawnGridObject(x, y, selectedGridObject.index);
+				}
 			}
 		}
 	}
@@ -70,44 +75,51 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 
 	#region private methods
 	private IGridObject SpawnGridObject(int x, int y, int index)
-	{
-		GridObject objectToPlace = GameSettings.instance.gameData.GetGridObject(index);
-		Vector3 pos = GameSettings.instance.levelGrid.GetGridPosition(x, y);
-		if(pos == Vector3.zero){
-			Debug.LogError("coordinates out of bounds");
-			return null;
-		}
-		GameObject existingGridObject;
-		if (TryGetGridObjectAtposition(x, y, out existingGridObject))
-		{
-			activeGridObjects.Remove(existingGridObject);
-			Destroy(existingGridObject);
-		}
-		GameObject go = Instantiate(objectToPlace.prefab, pos, Quaternion.identity, LevelObjectsParent);
-		IGridObject gridObject = go.GetComponent<IGridObject>();
-		gridObject.SetIndex(objectToPlace.index);
-		gridObject.SetXY(x, y);
+    {
+        GridObject objectToPlace = GameSettings.instance.gameData.GetGridObject(index);
+        Vector3 pos = GameSettings.instance.levelGrid.GetGridPosition(x, y);
+        if (pos == Vector3.zero)
+        {
+            Debug.LogError("coordinates out of bounds");
+            return null;
+        }
+        RemoveGridObject(x, y);
 
-		//handle player Spawn spot
-		if (gridObject.GetType() == typeof(PlayerSpawnSpot))
-		{
-			if (playerSpawnSpot != null)
-			{
-				int _x, _y;
-				playerSpawnSpot.GetXY(out _x, out _y);
-				SpawnGridObject(_x, _y, 0);
-			}
-			playerSpawnSpot = go.GetComponent<PlayerSpawnSpot>();
-			GameSettings.instance.playerSpawnSpotTransform = go.transform;
-		}
+        GameObject go = Instantiate(objectToPlace.prefab, pos, Quaternion.identity, LevelObjectsParent);
+        IGridObject gridObject = go.GetComponent<IGridObject>();
+        gridObject.SetIndex(objectToPlace.index);
+        gridObject.SetXY(x, y);
 
-		go.name += "_" + x + "_" + y;
-		activeGridObjects.Add(go);
+        //handle player Spawn spot
+        if (gridObject.GetType() == typeof(PlayerSpawnSpot))
+        {
+            if (playerSpawnSpot != null)
+            {
+                int _x, _y;
+                playerSpawnSpot.GetXY(out _x, out _y);
+                SpawnGridObject(_x, _y, 0);
+            }
+            playerSpawnSpot = go.GetComponent<PlayerSpawnSpot>();
+            GameSettings.instance.playerSpawnSpotTransform = go.transform;
+        }
 
-		return go.GetComponent<IGridObject>();
-	}
+        go.name += "_" + x + "_" + y;
+        activeGridObjects.Add(go);
 
-	void ClearGrid()
+        return go.GetComponent<IGridObject>();
+    }
+
+    private void RemoveGridObject(int x, int y)
+    {
+        GameObject existingGridObject;
+        if (TryGetGridObjectAtposition(x, y, out existingGridObject))
+        {
+            activeGridObjects.Remove(existingGridObject);
+            Destroy(existingGridObject);
+        }
+    }
+
+    void ClearGrid()
 	{
 		int j = LevelParent.childCount;
 		for (int i = 0; i < j; i++)

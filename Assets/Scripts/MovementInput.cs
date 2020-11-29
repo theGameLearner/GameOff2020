@@ -22,7 +22,7 @@ public class MovementInput : MonoBehaviour
     UIRendering uIRendering;
     Transform playerTransform;
     PlayerMovement playerMovementScript;
-    bool playerAcceptsInput = true; 
+    public bool playerAcceptsInput = true; 
 
     bool _mouseDown;
     Vector3 mouseStartPos;
@@ -43,6 +43,7 @@ public class MovementInput : MonoBehaviour
         if(!playerAcceptsInput)
 		{
             Time.timeScale = GameSettings.instance.timeScale / 2f;
+            Time.fixedDeltaTime = 0.02F * Time.timeScale;
             return;
 		}
         lastFrameVelocityDir = GetComponent<Rigidbody>().velocity.normalized;
@@ -54,6 +55,7 @@ public class MovementInput : MonoBehaviour
             if(Time.timeScale > GameSettings.instance.timeScale)
 			{
                 Time.timeScale = GameSettings.instance.timeScale;
+                Time.fixedDeltaTime = 0.02F * Time.timeScale;
             }
             DrawLine(mouseStartPos, mousePos);
             uIRendering.DrawUiMouseMove(mousePos);
@@ -61,6 +63,7 @@ public class MovementInput : MonoBehaviour
         else
 		{
             Time.timeScale = 1;
+            Time.fixedDeltaTime = 0.02F;
 		}
 
         if(Input.GetMouseButtonDown(0))

@@ -27,8 +27,13 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 	private Collider myCollider;
 	private bool canFire = true;
 	public float chargeMax = 2;
+
+	public float turnRate = 1;
 	private float currCharge;
 	private Vector3 lookAt;
+	private Vector3 lookDirection;
+
+	Quaternion lookRotation;
 
 	private static int bulletCount;
 
@@ -62,7 +67,12 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 
 		lookAt = targetTransform.position;
 		lookAt.y = turretTrans.position.y;
-		turretTrans.LookAt(lookAt);
+		lookDirection = (lookAt - turretTrans.position).normalized;
+		lookRotation = Quaternion.LookRotation(lookDirection);
+		turretTrans.rotation = Quaternion.Lerp(transform.rotation,lookRotation,turnRate*Time.unscaledDeltaTime);
+
+		// turretTrans.LookAt(lookAt);
+		
 		currCharge += Time.deltaTime;
 
 		if (currCharge > chargeMax)

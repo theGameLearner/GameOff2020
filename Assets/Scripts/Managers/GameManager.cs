@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
-using System;
+using Cinemachine;
 
 public class GameManager : GenericSingletonMonobehaviour<GameManager>
 {
@@ -34,6 +34,9 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         bool testingLevel;
 
         string[] RestrictedLevelNames = {"saveFile","Level1"};
+
+        [Header("camera")]
+        [SerializeField] CinemachineVirtualCamera virtualCamera;
  
         
     #endregion
@@ -168,6 +171,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             }
             public void SaveButton(){
                 SavePanel.SetActive(true);
+                GameOverPanel.SetActive(false);
             }
 
             public void MainMenu(){
@@ -181,6 +185,9 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
 
         public void GameOver()
 	    {
+            if(CurrGameState == GameStates.GameOver){
+                return;
+            }
             Debug.Log("Game Over");
             GameSettings.instance.playerTransform.gameObject.SetActive(false);
             GameOverPanel.SetActive(true);
@@ -194,8 +201,12 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
 	    }
 
         public void LevelFinished(){
-            // TODO: play cutscene
-            GameSettings.instance.playerTransform.gameObject.SetActive(false);
+            // GameSettings.instance.playerTransform.gameObject.SetActive(false);
+            CurrGameState = GameStates.GameOver;
+            virtualCamera.m_Follow = null;
+            virtualCamera.m_LookAt = null; 
+            MovementInput movementInput = GameSettings.instance.playerTransform.gameObject.GetComponent<MovementInput>();
+            movementInput.playerAcceptsInput = false;
             GameOverPanel.SetActive(true);
             HeadingText.text = "Congratulations !!\n Level Complete";
             if(testingLevel){
