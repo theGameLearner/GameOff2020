@@ -65,14 +65,15 @@ public class WallObject : MonoBehaviour, IGridObject
 			}
             myCollider.enabled = false;
 
+            GameObject explosionGo = ObjectPool.instance.GetPooledObject(GameSettings.instance.DestructibleWallVfxPoolIndex);
+            explosionGo.SetActive(true);
+            explosionGo.transform.position = transform.position;
+
         }
 	}
 }
 
 [System.Serializable]
 public class WallData{
-
-
-
 }
 

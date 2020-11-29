@@ -121,6 +121,9 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 		turretTrans.gameObject.SetActive(false);
 		myCollider.enabled = false;
 		canFire = false;
+		GameObject explosionGo = ObjectPool.instance.GetPooledObject(GameSettings.instance.TurretExplosionVfxPoolIndex);
+		explosionGo.SetActive(true);
+		explosionGo.transform.position = turretTrans.position;
 		GameManager.instance.EnemyDestroyed();
 	}
 

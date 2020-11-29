@@ -20,6 +20,10 @@ public class GameSettings : GenericSingletonMonobehaviour<GameSettings>
     public float bulletLifeTime = 1;
     public int bulletPoolIndex = 0;
 
+    public int sparksVfxPoolIndex = 4;
+    public int TurretExplosionVfxPoolIndex = 5;
+    public int DestructibleWallVfxPoolIndex = 5;
+
     public Grid<GridSquare> levelGrid;
 
     public GameData gameData;
