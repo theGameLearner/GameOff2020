@@ -48,8 +48,6 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                 InitializeState(value);
             }
         }
-
-   
     #endregion
 
     #region Monobehaviour
@@ -93,7 +91,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             }
         }
 
-        bool CheckIfFileNameExists(string fileName){
+        bool CheckIfFileNameAllowed(string fileName){
 
             Regex r = new Regex("^[a-zA-Z][a-zA-Z0-9]*$");
             if(!r.IsMatch(fileName)){
@@ -116,10 +114,10 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             foreach(FileInfo file in Files )
             {
                 if(fileName+".json" == file.Name){
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
 
         private void UploadToServer(string fileName)
@@ -158,7 +156,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             public void SaveLevelOnComplete(){
 
                 string fileName = SaveFileNameInput.text;
-                if(fileName!="" && !CheckIfFileNameExists(fileName)){
+                if(fileName!="" && CheckIfFileNameAllowed(fileName)){
                     LevelEditorManager.instance.SaveLevel(fileName);
                     UploadToServer(fileName);
                     //TODO: show confirmation of save
