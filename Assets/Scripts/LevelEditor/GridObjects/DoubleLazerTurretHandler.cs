@@ -100,18 +100,20 @@ public class DoubleLazerTurretHandler : MonoBehaviour,IGridObject
 
 		for(int sI=0; sI<startHitPoints.Length;sI++)
 		{
-			//if(startHitPoints[sI].collider.transform != GameSettings.instance.playerTransform)
+			if (startHitPoints[sI].collider.transform == GameSettings.instance.playerTransform)
 			{
-				startLazerPoint = startHitPoints[sI].point;
-			}	
+				GameManager.instance.GameOver();
+			}
+			startLazerPoint = startHitPoints[sI].point;
 		}
 
 		for (int eI = 0; eI < endHitPoints.Length; eI++)
 		{
-			//if (endHitPoints[eI].collider.transform != GameSettings.instance.playerTransform)
+			if (endHitPoints[eI].collider.transform == GameSettings.instance.playerTransform)
 			{
-				endLazerPoint = endHitPoints[eI].point;
+				GameManager.instance.GameOver();
 			}
+			endLazerPoint = endHitPoints[eI].point;
 		}
 	}
 }

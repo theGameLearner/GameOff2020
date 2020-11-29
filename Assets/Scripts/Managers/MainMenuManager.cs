@@ -62,7 +62,7 @@ public class MainMenuManager : MonoBehaviour
                 GameObject buttonGo = Instantiate(FileButtonPrefab,FileButtonContainer.transform.position,Quaternion.identity,FileButtonContainer.transform);
                 Button button = buttonGo.GetComponent<Button>();
                 button.onClick.AddListener(() => {LoadLevel(file.Name);});
-                button.GetComponentInChildren<Text>().text = file.Name;
+                button.GetComponentInChildren<Text>().text = file.Name.Split('.')[0]; ;
             }
         }
 

@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(playerRendererTrans != null)
+        if(playerRendererTrans != null && travelDirection.magnitude > 0.5f)
 		{
             rotationTransform.forward = travelDirection;
 

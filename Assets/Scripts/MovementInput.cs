@@ -22,6 +22,7 @@ public class MovementInput : MonoBehaviour
     UIRendering uIRendering;
     Transform playerTransform;
     PlayerMovement playerMovementScript;
+    bool playerAcceptsInput = true; 
 
     bool _mouseDown;
     Vector3 mouseStartPos;
@@ -39,6 +40,11 @@ public class MovementInput : MonoBehaviour
 
     void Update()
     {
+        if(!playerAcceptsInput)
+		{
+            Time.timeScale = GameSettings.instance.timeScale / 2f;
+            return;
+		}
         lastFrameVelocityDir = GetComponent<Rigidbody>().velocity.normalized;
         _mouseDown = Input.GetMouseButton(0);
         mousePos = Input.mousePosition;
@@ -71,8 +77,6 @@ public class MovementInput : MonoBehaviour
             directionRenderer.enabled = false;
             directionRenderer.positionCount = 2;
         }
-
-
     }
 
     /// <summary>
@@ -151,7 +155,7 @@ public class MovementInput : MonoBehaviour
             //we collide with floor.
             return;
 		}
-        Debug.Log("collided with " + collision.transform.name, collision.transform);
+        //Debug.Log("collided with " + collision.transform.name, collision.transform);
         Vector3 collisionNormal = collision.contacts[0].normal;
         var direction = Vector3.Reflect(lastFrameVelocityDir.normalized, collisionNormal);
         playerMovementScript.ChangePlayerDirection(direction.normalized);

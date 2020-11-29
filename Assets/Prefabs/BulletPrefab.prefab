@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6291340065349466384}
   - component: {fileID: -2745383586034677916}
   - component: {fileID: 4448234605287417773}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BulletPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 8748067750610093026}
   - component: {fileID: 8911794037023626106}
   - component: {fileID: 8911390666846045234}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: vfx_Projectile_LaserRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

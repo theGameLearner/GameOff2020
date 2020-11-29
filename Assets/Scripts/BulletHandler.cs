@@ -72,10 +72,10 @@ public class BulletHandler : MonoBehaviour
 		hitVfxGo.transform.SetParent(null,true);
 		hitVfxGo.SetActive(true);
 		
-		if(collision.transform == GameSettings.instance.playerTransform)
-		{
-			Debug.Log("Hit with player, need to call Game Over");
-		}	
+		//if(collision.transform != GameSettings.instance.playerTransform)
+		//{
+		//	Debug.Log("bullet hits : " + collision.transform.name, collision.transform);
+		//}	
 
 		ReturnList.instance.ReturnIfExisting(gameObject);
 	}
