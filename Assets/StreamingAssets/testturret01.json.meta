@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/StreamingAssets/testturret01.json.meta
 guid: 570e0e80e9c5e5e408c2b66ac1fc2d89
+=======
+guid: eb4c4da91e54781429e6a5fd333a6da3
+>>>>>>> f651f606ed5213cc8f73477bb1cd8f98c5f1a521:Assets/StreamingAssets/123.test.json.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
