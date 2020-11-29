@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Collider))]
 public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
@@ -18,6 +19,7 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 	public int bulletIndexInPool;
 	public float bulletLife;
 
+	public Image CircleIndicator;
 	public Transform targetTransform;
 	public Transform bulletPrefab;
 	public List<Transform> bulletStartPosList;
@@ -67,13 +69,14 @@ public class TurretHandler : MonoBehaviour, IGridObject, IDestroyableEnemy
 
 		lookAt = targetTransform.position;
 		lookAt.y = turretTrans.position.y;
-		lookDirection = (lookAt - turretTrans.position).normalized;
-		lookRotation = Quaternion.LookRotation(lookDirection);
-		turretTrans.rotation = Quaternion.Lerp(transform.rotation,lookRotation,turnRate*Time.unscaledDeltaTime);
+		// lookDirection = (lookAt - turretTrans.position).normalized;
+		// lookRotation = Quaternion.LookRotation(lookDirection);
+		// turretTrans.rotation = Quaternion.Lerp(transform.rotation,lookRotation,turnRate*Time.unscaledDeltaTime);
 
-		// turretTrans.LookAt(lookAt);
+		turretTrans.LookAt(lookAt);
 		
 		currCharge += Time.deltaTime;
+		CircleIndicator.fillAmount = currCharge/chargeMax;
 
 		if (currCharge > chargeMax)
 		{
