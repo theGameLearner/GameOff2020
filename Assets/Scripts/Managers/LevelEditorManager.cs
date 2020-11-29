@@ -66,6 +66,20 @@ public class LevelEditorManager : GenericSingletonMonobehaviour<LevelEditorManag
 				}
 			}
 		}
+
+		//right click delete Object
+		if (Input.GetMouseButton(1) && !EventSystem.current.IsPointerOverGameObject() && GameStates.LevelEditor == GameManager.instance.CurrGameState )
+		{
+			int x; int y;
+			Vector3 mousePos = Input.mousePosition;
+			mousePos.z = leCamera.transform.position.y;
+			Vector3 worldPos = leCamera.ScreenToWorldPoint(mousePos);
+			Debug.Log("world pos from leCamera = " + worldPos);
+			if (GameSettings.instance.levelGrid.GetXY(worldPos, out x, out y))
+			{
+				RemoveGridObject(x,y);
+			}
+		}
 	}
 
 
