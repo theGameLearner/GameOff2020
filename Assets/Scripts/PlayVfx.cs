@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayVfx : MonoBehaviour
 {
-    ParticleSystem[] psList;
+    List<ParticleSystem> psList = new List<ParticleSystem>();
 
     float activeDuration = 0;
 
@@ -13,10 +13,18 @@ public class PlayVfx : MonoBehaviour
     /// </summary>
     void Awake()
     {
-
-        psList = GetComponentsInChildren<ParticleSystem>();
-        foreach (ParticleSystem ps in psList)
+        
+        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
         {
+            psList.Add(ps);
+            if(ps.duration > activeDuration){
+                activeDuration = ps.duration;
+            }
+        }
+
+        if(GetComponent<ParticleSystem>()!=null){
+            ParticleSystem ps = GetComponent<ParticleSystem>();
+            psList.Add(ps);
             if(ps.duration > activeDuration){
                 activeDuration = ps.duration;
             }

@@ -155,5 +155,10 @@ public class MovementInput : MonoBehaviour
         Vector3 collisionNormal = collision.contacts[0].normal;
         var direction = Vector3.Reflect(lastFrameVelocityDir.normalized, collisionNormal);
         playerMovementScript.ChangePlayerDirection(direction.normalized);
+
+        GameObject sparksGo = ObjectPool.instance.GetPooledObject(GameSettings.instance.sparksVfxPoolIndex);
+		sparksGo.SetActive(true);
+        sparksGo.transform.SetParent(null);
+		sparksGo.transform.position = transform.position;
     }
 }
