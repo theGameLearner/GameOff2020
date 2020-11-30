@@ -165,7 +165,6 @@ public class MovementInput : MonoBehaviour
 
         GameObject sparksGo = ObjectPool.instance.GetPooledObject(GameSettings.instance.sparksVfxPoolIndex);
 		sparksGo.SetActive(true);
-        sparksGo.transform.SetParent(null);
 		sparksGo.transform.position = transform.position;
     }
 }

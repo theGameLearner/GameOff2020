@@ -64,11 +64,14 @@ public class WallObject : MonoBehaviour, IGridObject
                 wallRenderTrans.gameObject.SetActive(false);
 			}
             myCollider.enabled = false;
-
+            AudioManager.instance.PlaybreakAblewallClip();
             GameObject explosionGo = ObjectPool.instance.GetPooledObject(GameSettings.instance.DestructibleWallVfxPoolIndex);
             explosionGo.SetActive(true);
             explosionGo.transform.position = transform.position;
 
+        }
+        else{
+            AudioManager.instance.PlaywallHitClip();
         }
 	}
 }

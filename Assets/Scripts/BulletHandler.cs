@@ -71,6 +71,8 @@ public class BulletHandler : MonoBehaviour
 		hitVfxGo.transform.position = transform.position;
 		hitVfxGo.transform.SetParent(null,true);
 		hitVfxGo.SetActive(true);
+
+		AudioManager.instance.PlaybulletHitClip();
 		
 		//if(collision.transform != GameSettings.instance.playerTransform)
 		//{

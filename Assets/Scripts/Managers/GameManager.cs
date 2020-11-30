@@ -189,6 +189,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                 return;
             }
             Debug.Log("Game Over");
+            AudioManager.instance.PlayplayerDiedClip();
             GameSettings.instance.playerTransform.gameObject.SetActive(false);
             GameOverPanel.SetActive(true);
             if(testingLevel){
@@ -222,6 +223,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
 
         public void EnemyDestroyed(){
             noOfEnemies--;
+            AudioManager.instance.PlaykillTurretClip();
             if(noOfEnemies<=0){
                 LevelFinished();
             }
