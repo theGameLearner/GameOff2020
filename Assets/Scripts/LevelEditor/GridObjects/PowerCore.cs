@@ -74,7 +74,6 @@ public class PowerCore : MonoBehaviour,IGridObject,IDestroyableEnemy
                 GameObject explosionGo = ObjectPool.instance.GetPooledObject(GameSettings.instance.TurretExplosionVfxPoolIndex);
                 explosionGo.SetActive(true);
                 explosionGo.transform.position = transform.position;
-                GameManager.instance.EnemyDestroyed();
             }
         }
     #endregion

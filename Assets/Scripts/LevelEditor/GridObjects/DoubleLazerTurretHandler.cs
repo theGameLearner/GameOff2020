@@ -100,7 +100,7 @@ public class DoubleLazerTurretHandler : MonoBehaviour,IGridObject
 
 		for(int sI=0; sI<startHitPoints.Length;sI++)
 		{
-			if (startHitPoints[sI].collider.transform == GameSettings.instance.playerTransform)
+			if (startHitPoints[sI].collider.transform == GameSettings.instance.playerTransform  && sI == 0)
 			{
 				GameManager.instance.GameOver();
 			}
@@ -109,7 +109,7 @@ public class DoubleLazerTurretHandler : MonoBehaviour,IGridObject
 
 		for (int eI = 0; eI < endHitPoints.Length; eI++)
 		{
-			if (endHitPoints[eI].collider.transform == GameSettings.instance.playerTransform)
+			if (endHitPoints[eI].collider.transform == GameSettings.instance.playerTransform  && eI == 0)
 			{
 				GameManager.instance.GameOver();
 			}

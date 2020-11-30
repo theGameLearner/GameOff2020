@@ -163,6 +163,9 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                     LevelEditorManager.instance.SaveLevel(fileName);
                     UploadToServer(fileName);
                     //TODO: show confirmation of save
+                    if(File.Exists(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName + ".json")){
+                        File.Delete(Application.streamingAssetsPath+'/'+GameSettings.instance.defaultFileName + ".json");
+                    }
                     MainMenu();
                 }
                 else{
