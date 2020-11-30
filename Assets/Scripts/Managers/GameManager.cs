@@ -33,8 +33,6 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
         string currentLevelName;
         bool testingLevel;
 
-        string[] RestrictedLevelNames = {"saveFile","Level1"};
-
         [Header("camera")]
         [SerializeField] CinemachineVirtualCamera virtualCamera;
  
@@ -118,7 +116,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
                 return false;
             }
 
-            foreach (string name in RestrictedLevelNames)
+            foreach (string name in GameSettings.instance.gameData.CampaignLevelNames)
             {
                 if(name == fileName){
                     return false;

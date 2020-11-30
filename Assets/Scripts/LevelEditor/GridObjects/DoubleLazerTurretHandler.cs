@@ -98,22 +98,20 @@ public class DoubleLazerTurretHandler : MonoBehaviour,IGridObject
 		RaycastHit[] startHitPoints = Physics.RaycastAll(lazerOrigin, turretTrans.forward, lazerSize);
 		RaycastHit[] endHitPoints = Physics.RaycastAll(lazerOrigin, (-1*turretTrans.forward), lazerSize);
 
-		for(int sI=0; sI<startHitPoints.Length;sI++)
-		{
-			if (startHitPoints[sI].collider.transform == GameSettings.instance.playerTransform  && sI == 0)
+		
+			if (startHitPoints[0].collider.transform == GameSettings.instance.playerTransform )
 			{
 				GameManager.instance.GameOver();
 			}
-			startLazerPoint = startHitPoints[sI].point;
-		}
+			startLazerPoint = startHitPoints[0].point;
 
-		for (int eI = 0; eI < endHitPoints.Length; eI++)
-		{
-			if (endHitPoints[eI].collider.transform == GameSettings.instance.playerTransform  && eI == 0)
+
+	
+			if (endHitPoints[0].collider.transform == GameSettings.instance.playerTransform )
 			{
 				GameManager.instance.GameOver();
 			}
-			endLazerPoint = endHitPoints[eI].point;
-		}
+			endLazerPoint = endHitPoints[0].point;
+
 	}
 }

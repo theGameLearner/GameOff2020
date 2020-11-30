@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameData : ScriptableObject
 {
 
+    public List<string> CampaignLevelNames;
     public List<GridObject> AvailableGridObjects;
     public GridObject defaultGridObject;
 

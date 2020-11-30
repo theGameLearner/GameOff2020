@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84d41b2c5c26d1459c3b90a0e9780fe, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
+  CampaignLevelNames:
+  - Tutorial
+  - level1
+  - level2
+  - level3
+  - level4
   AvailableGridObjects:
   - name: wall
     index: 1

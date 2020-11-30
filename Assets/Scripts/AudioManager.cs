@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TGL.Singletons;
 
 public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
 {
 
+    [SerializeField] Slider SfxSlider;
+    [SerializeField] Slider musicSlider;
     [SerializeField] AudioSource sfxAudioSource;
     [SerializeField] AudioSource bgAudioSource;
 
@@ -32,9 +35,15 @@ public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
     /// </summary>
     void Start()
     {
+        sfxAudioSource.volume = PlayerPrefs.GetFloat("sfxVolume",0.5f);
+        SfxSlider.value = PlayerPrefs.GetFloat("sfxVolume",0.5f);
+
+        bgAudioSource.volume = PlayerPrefs.GetFloat("musicVolume",0.5f);
+        musicSlider.value = PlayerPrefs.GetFloat("musicVolume",0.5f);
+
         if(BgMusic.clip!=null){
             bgAudioSource.clip = BgMusic.clip;
-            bgAudioSource.volume = BgMusic.volumeMultiplier;
+            bgAudioSource.volume *= BgMusic.volumeMultiplier;
             bgAudioSource.Play();
         }
 
@@ -65,6 +74,17 @@ public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
         if(playerDiedClip.clip!=null){
             sfxAudioSource.PlayOneShot(playerDiedClip.clip,playerDiedClip.volumeMultiplier);
         }
+    }
+
+    public void OnSfxVolumeChanged(float volume){
+        volume = Mathf.Clamp01(volume);
+        PlayerPrefs.SetFloat("sfxVolume",volume);
+        sfxAudioSource.volume = volume;
+    }
+    public void OnMusicVolumeChanged(float volume){
+        volume = Mathf.Clamp01(volume);
+        PlayerPrefs.SetFloat("musicVolume",volume);
+        bgAudioSource.volume = volume;
     }
 }
 

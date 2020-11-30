@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuManager : MonoBehaviour
 {
     #region variables
+        [SerializeField] GameData gameData;
         [SerializeField] GameObject MenuCanvas;
         [SerializeField] GameObject FileCanvas;
 
@@ -37,6 +38,15 @@ public class MainMenuManager : MonoBehaviour
             MenuCanvas.SetActive(false);
             FetchFiles();
         }
+        public void CampaignButton(){
+            FileCanvas.SetActive(true);
+            MenuCanvas.SetActive(false);
+            FetchCampaignFiles();
+        }
+
+        public void QuitButton(){
+            Application.Quit();
+        }
 
         public void BackButton(){
             MenuCanvas.SetActive(true);
@@ -59,10 +69,32 @@ public class MainMenuManager : MonoBehaviour
             FileInfo[] Files = d.GetFiles("*.json");
             foreach(FileInfo file in Files )
             {
-                GameObject buttonGo = Instantiate(FileButtonPrefab,FileButtonContainer.transform.position,Quaternion.identity,FileButtonContainer.transform);
-                Button button = buttonGo.GetComponent<Button>();
-                button.onClick.AddListener(() => {LoadLevel(file.Name);});
-                button.GetComponentInChildren<Text>().text = file.Name.Split('.')[0]; ;
+                if(!gameData.CampaignLevelNames.Contains(file.Name.Split('.')[0]) && file.Name.Split('.')[0] !="saveFile"){
+                    GameObject buttonGo = Instantiate(FileButtonPrefab,FileButtonContainer.transform.position,Quaternion.identity,FileButtonContainer.transform);
+                    Button button = buttonGo.GetComponent<Button>();
+                    button.onClick.AddListener(() => {LoadLevel(file.Name);});
+                    button.GetComponentInChildren<Text>().text = file.Name.Split('.')[0];
+                }
+            }
+        }
+
+        void FetchCampaignFiles(){
+
+            foreach (Transform t in FileButtonContainer.transform)
+            {
+                Destroy(t.gameObject);
+            }
+
+            DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath);
+            FileInfo[] Files = d.GetFiles("*.json");
+            foreach(FileInfo file in Files )
+            {
+                if(gameData.CampaignLevelNames.Contains(file.Name.Split('.')[0])){
+                    GameObject buttonGo = Instantiate(FileButtonPrefab,FileButtonContainer.transform.position,Quaternion.identity,FileButtonContainer.transform);
+                    Button button = buttonGo.GetComponent<Button>();
+                    button.onClick.AddListener(() => {LoadLevel(file.Name);});
+                    button.GetComponentInChildren<Text>().text = file.Name.Split('.')[0];
+                }
             }
         }
 

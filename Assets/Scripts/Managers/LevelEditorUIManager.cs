@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TGL.Singletons;
 public class LevelEditorUIManager : GenericSingletonMonobehaviour<LevelEditorUIManager>
 {
@@ -67,6 +68,11 @@ public class LevelEditorUIManager : GenericSingletonMonobehaviour<LevelEditorUIM
 
             public void Loadtest(){
                 LevelEditorManager.instance.load(LoadDataField.text);
+            }
+
+            public void BackToMenu(){
+                LevelEditorManager.instance.SaveLevel();
+                SceneManager.LoadScene(0);
             }
         #endregion
     #endregion
