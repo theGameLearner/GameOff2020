@@ -85,16 +85,33 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             if(state == GameStates.LevelEditor){
                 LevelEditorparent.SetActive(true);
                 GamePlayParent.SetActive(false);
+                Time.timeScale = 1;
+                Time.fixedDeltaTime = 0.02f;
             }
-            else if(state == GameStates.GamePlay){
-                LevelEditorparent.SetActive(false);
-                GamePlayParent.SetActive(true);
-                GameSettings.instance.playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up*0f;
-                noOfEnemies = GameSettings.instance.NoOfEnemies;
-            }
+            else if(state == GameStates.GamePlay)
+        {
+            LevelEditorparent.SetActive(false);
+            GamePlayParent.SetActive(true);
+            StartGame();
         }
+    }
 
-        bool CheckIfFileNameAllowed(string fileName){
+    private void StartGame()
+    {
+        Transform playerTransform = GameSettings.instance.playerTransform;
+        playerTransform.gameObject.SetActive(true);
+        playerTransform.position = GameSettings.instance.playerSpawnSpotTransform.position + Vector3.up * 0f;
+        MovementInput movementInput = playerTransform.GetComponent<MovementInput>();
+        movementInput.playerAcceptsInput = true;
+        playerTransform.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        noOfEnemies = GameSettings.instance.NoOfEnemies;
+        virtualCamera.m_Follow = playerTransform;
+        virtualCamera.m_LookAt = playerTransform;
+        GameOverPanel.SetActive(false);
+        SavePanel.SetActive(false);
+    }
+
+    bool CheckIfFileNameAllowed(string fileName){
 
             Regex r = new Regex("^[a-zA-Z][a-zA-Z0-9]*$");
             if(!r.IsMatch(fileName)){
