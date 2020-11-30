@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ public class MainMenuManager : MonoBehaviour
 {
     #region variables
         [SerializeField] GameData gameData;
+        [SerializeField] GameObject tutorialCanvas;
         [SerializeField] GameObject MenuCanvas;
         [SerializeField] GameObject FileCanvas;
 
@@ -44,6 +46,11 @@ public class MainMenuManager : MonoBehaviour
             FetchCampaignFiles();
         }
 
+        public void TutorialButton(){
+            tutorialCanvas.SetActive(true);
+            MenuCanvas.SetActive(false);
+        }
+
         public void QuitButton(){
             Application.Quit();
         }
@@ -51,6 +58,7 @@ public class MainMenuManager : MonoBehaviour
         public void BackButton(){
             MenuCanvas.SetActive(true);
             FileCanvas.SetActive(false);
+            tutorialCanvas.SetActive(false);
         }
         public void LeveleditorButton(){
             PlayerPrefs.SetInt("GameStartState",0);// 0 for level editor , 1 for play level
@@ -85,16 +93,19 @@ public class MainMenuManager : MonoBehaviour
                 Destroy(t.gameObject);
             }
 
-            DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath);
-            FileInfo[] Files = d.GetFiles("*.json");
-            foreach(FileInfo file in Files )
+            // DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath);
+            // FileInfo[] Files = d.GetFiles("*.json").OrderBy(f => f.Name).ToArray();
+
+            // for(int i = 0; i< Files.Length ;i++){
+            //     Debug.Log(Files[i].Name);
+            // }
+            
+            foreach(string fileName in gameData.CampaignLevelNames)
             {
-                if(gameData.CampaignLevelNames.Contains(file.Name.Split('.')[0])){
-                    GameObject buttonGo = Instantiate(FileButtonPrefab,FileButtonContainer.transform.position,Quaternion.identity,FileButtonContainer.transform);
-                    Button button = buttonGo.GetComponent<Button>();
-                    button.onClick.AddListener(() => {LoadLevel(file.Name);});
-                    button.GetComponentInChildren<Text>().text = file.Name.Split('.')[0];
-                }
+                GameObject buttonGo = Instantiate(FileButtonPrefab,FileButtonContainer.transform.position,Quaternion.identity,FileButtonContainer.transform);
+                Button button = buttonGo.GetComponent<Button>();
+                button.onClick.AddListener(() => {LoadLevel(fileName + ".json");});
+                button.GetComponentInChildren<Text>().text = fileName;
             }
         }
 

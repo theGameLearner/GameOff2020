@@ -61,6 +61,7 @@ public class GameManager : GenericSingletonMonobehaviour<GameManager>
             int mode = PlayerPrefs.GetInt("GameStartState",0);
             if(mode == 1){
                 string loadFileName = PlayerPrefs.GetString("FileToLoad",GameSettings.instance.defaultFileName);
+                Debug.Log(loadFileName);
                 if(loadFileName == GameSettings.instance.defaultFileName){
                     testingLevel = true;
                 }

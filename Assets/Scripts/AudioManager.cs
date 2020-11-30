@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TGL.Singletons;
+using UnityEngine.SceneManagement;
 
-public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
+public class AudioManager : MonoBehaviour
 {
 
-    [SerializeField] Slider SfxSlider;
-    [SerializeField] Slider musicSlider;
+    Slider SfxSlider;
+    Slider musicSlider;
     [SerializeField] AudioSource sfxAudioSource;
     [SerializeField] AudioSource bgAudioSource;
 
@@ -20,14 +21,23 @@ public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
     [SerializeField] Clip playerDiedClip;
 
 
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
-    void Awake()
-    {
-        base.Awake();
-        DontDestroyOnLoad(gameObject);
+    private static AudioManager _instance = null;
+    public static AudioManager instance{
+        get{
+            if(_instance == null){
+                _instance = FindObjectOfType<AudioManager>();
+            }
+            return _instance;
+        }
     }
+    void Awake(){
+        if(_instance == null){
+            _instance = this;
+        }
+        else if(_instance != this){
+            Destroy(this.gameObject);
+        }
+    }        
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -35,11 +45,24 @@ public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
     /// </summary>
     void Start()
     {
-        sfxAudioSource.volume = PlayerPrefs.GetFloat("sfxVolume",0.5f);
-        SfxSlider.value = PlayerPrefs.GetFloat("sfxVolume",0.5f);
+        if(GameObject.FindGameObjectWithTag("sfxSlider") != null){
+            SfxSlider = GameObject.FindGameObjectWithTag("sfxSlider").GetComponent<Slider>();
+            musicSlider = GameObject.FindGameObjectWithTag("bgSlider").GetComponent<Slider>();
 
-        bgAudioSource.volume = PlayerPrefs.GetFloat("musicVolume",0.5f);
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume",0.5f);
+            if(SfxSlider != null){
+                sfxAudioSource.volume = PlayerPrefs.GetFloat("sfxVolume",0.5f);
+                SfxSlider.value = PlayerPrefs.GetFloat("sfxVolume",0.5f);
+            }
+
+            if(musicSlider != null){
+                bgAudioSource.volume = PlayerPrefs.GetFloat("musicVolume",0.5f);
+                musicSlider.value = PlayerPrefs.GetFloat("musicVolume",0.5f);
+            }
+        }
+       
+        
+
+    
 
         if(BgMusic.clip!=null){
             bgAudioSource.clip = BgMusic.clip;
@@ -86,6 +109,7 @@ public class AudioManager : GenericSingletonMonobehaviour<AudioManager>
         PlayerPrefs.SetFloat("musicVolume",volume);
         bgAudioSource.volume = volume;
     }
+
 }
 
 

@@ -82,7 +82,7 @@ namespace TGL.Singletons
             else if (_genericInstance != (this as T))
             {
                 Debug.LogError("creating a new copy of existing singleton class with type as " + typeof(T) + " is not allowed in gameobject " + (this as T).gameObject);
-                Destroy((this as T));
+                Destroy(this.gameObject);
             }
         }
     }
